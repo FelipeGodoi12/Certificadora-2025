@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*Adicionar uma fonte depois*/
+
+.navBar {
+    text-decoration: none; 
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #f4f4f4;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+}
+
+a:hover{
+  background-color: lightgray;
+  color:blue;
+  box-shadow: #f4f4f4be;
+}
+
+
+.div1, .div2{
+    display: flex;
+    align-items: center;
+    gap: 20px; 
+}
+
+body{
+  text-align: center;
+}
+
