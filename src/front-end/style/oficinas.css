@@ -15,16 +15,12 @@
    padding: 0 44px;
    background-color: #f4f4f4;
    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-   height: 60px; /* altura fixa opcional */
+   height: 60px; 
 }
 
 .div1, .div2 {
   display: flex;
   align-items: center;
-}
-
-body{
-  text-align: center;
 }
 
 a {
@@ -33,14 +29,40 @@ a {
 }
 
 .Item {
-  display: block;                 /* Faz o link ocupar o bloco todo */
-  padding: 18px 20px;             /* Aumenta área clicável */
-  text-decoration: none;          /* Tira o sublinhado */
-  color: #000;                    /* Cor do texto */
-  transition: background-color 0.2s ease; /* Animação suave */
+  display: block;                 
+  padding: 18px 20px;            
+  text-decoration: none;          
+  color: #000;                    
+  transition: background-color 0.2s ease; 
   cursor: pointer;
 }
 
 .Item:hover {
-  background-color: #e0e0e0;      /* Fica levemente mais escuro */
+  background-color: #e0e0e0;      
 }
+
+/*=======Bloco principal da página=======*/
+
+.block{
+    margin: auto;
+    max-width: 1250px;
+    background-color: rgb(211, 211, 211); /*muda a cor dps*/
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /*tem q ver qq isso aq muda*/
+    font-size: 16px;
+    /*line-height: 1.7;*/
+    color: #333;
+    text-align: justify;
+}
+
+.search{
+  padding: 7px;
+  border-radius: 4px;
+}
+
+.search_bt{
+  margin-left: 8px;
+  border-radius: 3px;
+  padding: 0;
+}
+
