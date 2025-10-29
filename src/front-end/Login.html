@@ -21,18 +21,49 @@
         </nav>
     </header>
     <div class="login">
-        <form>
+        <form id="loginForm">
             <h2>Login</h2>
             <div class="input">
-                <input placeholder="email" type="email">
+                <input id="email" placeholder="email" type="email">
             </div>
             <div class="input">
-                <input placeholder="senha" type="password">
+                <input id="password" placeholder="senha" type="password">
             </div>
             <div>
                 <button class="send">Login</button>
             </div>
         </form>
     </div>
+    <div id="mensagem"></div>
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        const resposta = await fetch('http://localhost:3000/users/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        const resultado = await resposta.json();
+
+        const msg = document.getElementById('mensagem');
+        if (resposta.ok && resultado.token) {
+            localStorage.setItem('token', resultado.token);
+
+            msg.textContent = 'Login realizado com sucesso!';
+
+        } else {
+            msg.textContent = resultado.erro || 'Email ou senha incorretos!';
+        }
+    } catch (error) {
+        document.getElementById('mensagem').textContent = 'Erro ao conectar com o servidor.';
+    }
+});
+</script>
 </body>
 </html>
