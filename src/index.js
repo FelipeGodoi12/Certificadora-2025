@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const usersRouter = require('./back-end/routes/users.js')
 const cors = require('cors')
 const routes = require('./back-end/routes/routes')
-const path = require('path');
+const path = require('path')
+const PORT = process.env.PORT || 3000
 require('dotenv').config()
 
 
@@ -22,4 +23,4 @@ app.use('/style', express.static(path.join(__dirname, 'front-end', 'style')))
 
 
 
-app.listen(3000, () => console.log('Server running on port 3000'))
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
