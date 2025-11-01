@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 const app = express()
 app.use(cors({
-  origin: 'https://certificadora-2025-14.onrender.com' //precisa alterar a cada deploy
+  origin: 'https://certificadora-2025-13.onrender.com' //precisa alterar a cada deploy
 }))
 app.use(express.json())
 app.use('/', routes)
