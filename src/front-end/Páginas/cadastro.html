@@ -55,7 +55,7 @@
         return;
     }
 
-    const res = await fetch('http://localhost:3000/users/cadastro', {
+    const res = await fetch('https://certificadora-2025-13.onrender.com/users/cadastro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nome, email, password })
@@ -64,11 +64,11 @@
     const data = await res.json();
 
     if (res.ok) {
-        alert('Cadastro realizado com sucesso');
+        alert('Cadastro realizado com sucesso')
         
     } else {
-        alert(data.erro || 'Erro');
+        alert(data.erro || 'Erro')
     }
-    });
+    })
 </script>
 </html>

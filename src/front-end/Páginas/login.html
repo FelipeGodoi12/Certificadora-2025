@@ -37,31 +37,31 @@
     <div id="mensagem"></div>
     <script>
     document.getElementById('loginForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+    event.preventDefault()
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
 
     try {
-        const resposta = await fetch('http://localhost:3000/users/login', {
+        const resposta = await fetch('https://certificadora-2025-13.onrender.com/users/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
-        });
+        })
 
-        const resultado = await resposta.json();
+        const resultado = await resposta.json()
 
-        const msg = document.getElementById('mensagem');
+        const msg = document.getElementById('mensagem')
         if (resposta.ok && resultado.token) {
-            localStorage.setItem('token', resultado.token);
-            msg.textContent = 'Login realizado com sucesso!';
+            localStorage.setItem('token', resultado.token)
+            msg.textContent = 'Login realizado com sucesso!'
         } else {
-            msg.textContent = resultado.erro || 'Email ou senha incorretos!';
+            msg.textContent = resultado.erro || 'Email ou senha incorretos!'
         }
     } catch (error) {
-        document.getElementById('mensagem').textContent = 'Erro ao conectar com o servidor.';
+        document.getElementById('mensagem').textContent = 'Erro ao conectar com o servidor.'
     }
-});
+})
 </script>
 </body>
 </html>
