@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="../style/LogCad.css">
+</head>
+<body>
+    <header>
+        <nav class="navBar">
+            <div class="div1">
+                <a class="Item" href="/">Página Inicial</a>
+                <a class="Item" href="/oficinas">Oficinas</a>
+                <a class="Item" href="/criar-oficinas">Criar Oficina</a>
+            </div>
+            <div class="div2">
+                <a class="Item" href="/login">Login</a>
+                <a class="Item" href="/cadastro">Cadastro</a>
+            </div>
+        </nav>
+    </header>
+    <div class="login">
+        <form>
+            <h2>Cadastro</h2>
+            <div>
+                <input placeholder="Nome" id="nome">
+            </div>
+            <div>
+                <input placeholder="email" type="email" id="email">
+            </div>
+            <div>
+                <input placeholder="senha" type="password"  id="senha"> 
+            </div>
+            <div>
+                <input placeholder="confirmar senha" type="password" id="confirmaSenha"> 
+            </div>
+            <div>
+                <button class="send">Cadastrar-se</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+    document.querySelector('form').addEventListener('submit', async function(e) {
+    e.preventDefault(); 
+
+    const nome = document.getElementById('nome').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('senha').value;
+    const confirmaSenha = document.getElementById('confirmaSenha').value;
+
+    if (password !== confirmaSenha) {
+        alert('As senhas não conferem!');
+        return;
+    }
+
+    const res = await fetch('http://localhost:3000/users/cadastro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        alert('Cadastro realizado com sucesso');
+        
+    } else {
+        alert(data.erro || 'Erro');
+    }
+    });
+</script>
+</html>

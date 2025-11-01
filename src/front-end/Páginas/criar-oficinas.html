@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Oficina</title>
+    <link rel="stylesheet" href="../style/criarOficinas.css">
+</head>
+<body>
+    <header>
+        <nav class="navBar">
+            <div class="div1">
+                <a class="Item" href="/">Página Inicial</a>
+                <a class="Item" href="/oficinas">Oficinas</a>
+                <a class="Item" href="/criar-oficinas">Criar Oficina</a>
+            </div>
+            <div class="div2">
+                <a class="Item" href="/login">Login</a>
+                <a class="Item" href="/cadastro">Cadastro</a>
+            </div>
+        </nav>
+    </header>
+    <div class="block">
+        <h2>Cadastrar Nova Oficina</h2>
+        <form class="create-workshop-form">
+            <div class="form-group">
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" name="titulo" required>
+            </div>
+            <div class="form-group">
+                <label for="professor">Professor</label>
+                <input type="text" id="professor" name="professor" required>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="data">Data</label>
+                <input type="date" id="data" name="data" required>
+            </div>
+            <div class="form-group">
+                <label for="horario">Horário</label>
+                <input type="time" id="horario" name="horario" required>
+            </div>
+            <div class="form-group">
+                <label for="vagas">Número de Vagas</label>
+                <input type="number" id="vagas" name="vagas" min="1" required>
+            </div>
+            <button type="submit">Criar Oficina</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
