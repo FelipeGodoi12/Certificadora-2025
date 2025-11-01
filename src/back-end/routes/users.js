@@ -5,9 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 //const SECRET = process.env.SECRET
-
 SECRET = 'pacienciafelipe:)'
-
 
 
 // Cadastro 
@@ -52,4 +50,8 @@ router.post('/login', async (req, res) => {
     return res.status(500).json({ erro: 'Erro interno no servidor.' })
   }
 })
+
+
+
+
 module.exports = router
