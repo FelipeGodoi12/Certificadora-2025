@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const usersRouter = require('./routes/users.js')
 const cors = require('cors')
-//const jwt = require('jsonwebtoken'
+
 
 mongoose.connect('mongodb://localhost:27017/certificadora')
 

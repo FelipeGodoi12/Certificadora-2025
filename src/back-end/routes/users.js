@@ -8,10 +8,7 @@ require('dotenv').config()
 
 SECRET = 'pacienciafelipe:)'
 
-// Página inicial
-router.get('/', async (req, res) => {
-    res.send("Teste")
-})
+
 
 // Cadastro 
 router.post('/cadastro', async (req, res) => {

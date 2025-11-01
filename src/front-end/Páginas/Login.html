@@ -10,7 +10,7 @@
     <header>
         <nav class="navBar">
             <div class="div1">
-                <a class="Item" href="main.html">Página Inicial</a>
+                <a class="Item" href="index.html">Página Inicial</a>
                 <a class="Item" href="Oficinas.html">Oficinas</a>
                 <a class="Item" href="CriarOficinas.html">Criar Oficina</a>
             </div>
@@ -54,9 +54,7 @@
         const msg = document.getElementById('mensagem');
         if (resposta.ok && resultado.token) {
             localStorage.setItem('token', resultado.token);
-
             msg.textContent = 'Login realizado com sucesso!';
-
         } else {
             msg.textContent = resultado.erro || 'Email ou senha incorretos!';
         }
