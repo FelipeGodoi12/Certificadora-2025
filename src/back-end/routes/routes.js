@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
-const path = require('path');
+const path = require('path')
 
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../../front-end/Páginas/Homepage.html'))

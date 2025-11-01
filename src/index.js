@@ -2,7 +2,8 @@ const express = require('express')
 const mongoose = require('mongoose')
 const usersRouter = require('./back-end/routes/users.js')
 const cors = require('cors')
-const routes = require('./back-end/routes/routes');
+const routes = require('./back-end/routes/routes')
+const path = require('path');
 require('dotenv').config()
 
 
@@ -17,6 +18,7 @@ app.use(cors())
 app.use(express.json())
 app.use('/', routes)
 app.use('/users', usersRouter)
+app.use('/style', express.static(path.join(__dirname, 'front-end', 'style')))
 
 
 
