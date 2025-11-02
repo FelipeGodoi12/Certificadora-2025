@@ -54,7 +54,8 @@
         const msg = document.getElementById('mensagem')
         if (resposta.ok && resultado.token) {
             localStorage.setItem('token', resultado.token)
-            msg.textContent = 'Login realizado com sucesso!'
+            msg.textContent = 'Login realizado com sucesso'
+            window.location.href = '/'
         } else {
             msg.textContent = resultado.erro || 'Email ou senha incorretos!'
         }
