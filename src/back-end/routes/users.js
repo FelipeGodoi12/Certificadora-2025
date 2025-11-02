@@ -39,10 +39,10 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
       { id: usuario._id, email: usuario.email }, SECRET, { expiresIn: '24h' }
     )
-
-    return res.status(200).json({ 
-      mensagem: 'Login realizado com sucesso!',
-      token 
+    console.log(usuario.email)
+    console.log(usuario.admin)
+    return res.json({ token, admin: usuario.admin,
+      mensagem: 'Login realizado com sucesso!'
     })
 
   } catch (erro) {
