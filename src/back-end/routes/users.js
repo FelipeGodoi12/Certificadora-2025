@@ -4,9 +4,7 @@ const User = require('../models/User.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-//const SECRET = process.env.SECRET
-SECRET = 'pacienciafelipe:)'
-
+const SECRET = process.env.SECRET
 
 // Cadastro 
 router.post('/cadastro', async (req, res) => {
