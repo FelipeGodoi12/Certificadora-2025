@@ -6,6 +6,11 @@ document.querySelector('form').addEventListener('submit', async function(e) {
     const password = document.getElementById('senha').value;
     const confirmaSenha = document.getElementById('confirmaSenha').value;
 
+     if (password.length < 6 || password.length > 12) {
+        alert('A senha deve conter entre 6 e 12 caracteres!');
+        return;
+    }
+
     if (password !== confirmaSenha) {
         alert('As senhas não conferem!');
         return;

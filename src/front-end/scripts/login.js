@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         cadastroBtn.style.display = 'inline-block'
     }
 
+    //Log out
     logoutBtn.addEventListener('click', function (e) {
         e.preventDefault()
         localStorage.removeItem('token')

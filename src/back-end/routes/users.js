@@ -11,6 +11,13 @@ router.post('/cadastro', async (req, res) => {
     console.log(req.body) 
     try {
         const { nome, email, password } = req.body
+         if (!password || password.length < 6 || password.length > 12) {
+            return res.status(400).send({ erro: 'A senha deve ter entre 6 e 12 caracteres.' });
+        }
+        const existente = await User.findOne({ email });
+        if (existente) {
+            return res.status(400).send({ erro: 'Este email já foi cadastrado' });
+        }
         const novoUsuario = new User({ nome, email, password })
         await novoUsuario.save()
         res.status(201).send({ message: 'Usuário cadastrado com sucesso.' })
