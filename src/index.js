@@ -31,6 +31,7 @@ app.use('/style', express.static(path.join(__dirname, 'front-end', 'style')))
 app.use('/scripts', express.static(path.join(__dirname, 'front-end', 'scripts')))
 app.use('/imgs', express.static(path.join(__dirname, 'front-end', 'imgs')))
 app.use(express.static(path.join(process.cwd(), "src", "front-end", "paginas")));
+app.use(express.static(path.join(process.cwd(), "src", "front-end")));
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
