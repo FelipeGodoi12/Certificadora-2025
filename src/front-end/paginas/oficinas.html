@@ -73,7 +73,64 @@ document.addEventListener('DOMContentLoaded', function () {
         location.reload()
     })
 })
+    async function carregarOficinas() {
+        const container = document.getElementById('workshopListContainer')
+        if (!container) return
+
+        try {
+            // 1. Chama a API que você criou
+            const response = await fetch('/api/oficinas') 
+            if (!response.ok) {
+                throw new Error('Falha ao carregar oficinas.')
+            }
+            
+            const oficinas = await response.json()
+            container.innerHTML = '' // Limpa o container
+
+            if (oficinas.length === 0) {
+                container.innerHTML = '<p>Nenhuma oficina disponível no momento.</p>'
+                return
+            }
+
+            // 2. Itera sobre cada oficina e cria um card para ela
+            oficinas.forEach(oficina => {
+                const card = document.createElement('div')
+                card.className = 'workshop-card' // Classe do seu CSS
+
+                const dataFormatada = new Date(oficina.data).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+
+                // 3. Define o HTML interno do card
+                card.innerHTML = `
+                    <h3>${oficina.nome}</h3>
+                    <p><strong>Professor:</strong> ${oficina.professor}</p>
+                    <p><strong>Data:</strong> ${dataFormatada}</p>
+                    <p><strong>Horário:</strong> ${oficina.horario}</p>
+                    <p><strong>Vagas:</strong> ${oficina.vagas}</p>
+                    <p>${oficina.descricao}</p>
+                    <button>Inscrever-se</button> 
+                `
+                container.appendChild(card) // Adiciona o card ao container
+            })
+
+        } catch (error) {
+            console.error('Erro ao carregar oficinas:', error)
+            container.innerHTML = '<p>Erro ao carregar oficinas. Tente novamente mais tarde.</p>'
+        }
+    }
+
+    // 4. Chama a função para carregar as oficinas
+    carregarOficinas()
+    
+})
+    
+
+    
 </script>
 
 </html>
+
 
