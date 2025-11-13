@@ -8,7 +8,8 @@ const oficinaSchema = new mongoose.Schema({
     horario: { type: String, required: true },    
     vagas: { type: Number, required: true },      
     status: { type: Boolean, default: true},
-    createdAt: { type: Date, default: Date.now } 
+    createdAt: { type: Date, default: Date.now },
+    criador: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 }, {
     versionKey: false
 })
