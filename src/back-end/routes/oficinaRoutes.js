@@ -4,6 +4,17 @@ const Oficina = require('../models/Oficinas')
 const authAdmin = require('../middlewares/authAdmin')
 
 
+
+router.get('/oficinas/list', async (req, res) => {
+  try {
+    const oficinas = await Oficina.find();
+    res.status(200).json(oficinas);
+  } catch (err) {
+    res.status(500).json({ message: "Erro ao buscar oficinas" });
+  }
+});
+
+
 router.post('/criar-oficina', async (req, res) => {
     try {
         const { titulo, professor, descricao, data, horario, vagas } = req.body
@@ -29,17 +40,5 @@ router.post('/criar-oficina', async (req, res) => {
         res.status(500).json({ message: 'Erro ao criar oficina.' })
     }
 })
-
-router.get('/api/oficinas', async (req, res) => {
-    try {
-        // Busca oficinas onde o status é true (ativas)
-        const oficinas = await Oficina.find({ status: true }).sort({ data: 1 }) // Ordena pela data
-        res.status(200).json(oficinas)
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({ message: 'Erro ao buscar oficinas.' })
-    }
-})
-
 
 module.exports = router

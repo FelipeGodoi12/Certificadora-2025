@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oficinas</title>
+    <script src="/env.js"></script>
+    <script src="../scripts/oficinas.js" defer></script>
     <link rel="stylesheet" href="../style/oficinas.css">
 </head>
 <body>
@@ -28,20 +30,10 @@
             <button class="search_bt"><img src="../imgs/lupa2.png" height="25" width="25"></button>
         </div>
     </div>
-    <div class="block">
-        <div class="search-container">
-            </div>
-
-        <div class="workshop-list" id="workshopListContainer">
-            </div>
-        
-    </div>
-    
 </body>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     
-    // O seu código existente para os botões (está correto)
     const loginBtn = document.getElementById('loginBtn')
     const cadastroBtn = document.getElementById('cadastroBtn')
     const logoutBtn = document.getElementById('logoutBtn')
@@ -73,67 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.removeItem('isAdmin')
         location.reload()
     })
-
-
-    
-    // 1. Define a função para carregar oficinas
-    async function carregarOficinas() {
-        const container = document.getElementById('workshopListContainer')
-        if (!container) return
-
-        try {
-            // 2. Chama a API
-            const response = await fetch('/api/oficinas') 
-            if (!response.ok) {
-                throw new Error('Falha ao carregar oficinas.')
-            }
-            
-            const oficinas = await response.json()
-            container.innerHTML = '' // Limpa o container
-
-            if (oficinas.length === 0) {
-                container.innerHTML = '<p>Nenhuma oficina disponível no momento.</p>'
-                return
-            }
-
-            // 3. Itera e cria os cards
-            oficinas.forEach(oficina => {
-                const card = document.createElement('div')
-                card.className = 'workshop-card' // Classe do seu CSS
-
-                const dataFormatada = new Date(oficina.data).toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
-
-                // 4. Define o HTML de cada card
-                card.innerHTML = `
-                    <h3>${oficina.nome}</h3>
-                    <p><strong>Professor:</strong> ${oficina.professor}</p>
-                    <p><strong>Data:</strong> ${dataFormatada}</p>
-                    <p><strong>Horário:</strong> ${oficina.horario}</p>
-                    <p><strong>Vagas:</strong> ${oficina.vagas}</p>
-                    <p>${oficina.descricao}</p>
-                    <button>Inscrever-se</button> 
-                `
-                container.appendChild(card) // Adiciona o card ao container
-            })
-
-        } catch (error) {
-            console.error('Erro ao carregar oficinas:', error)
-            container.innerHTML = '<p>Erro ao carregar oficinas. Tente novamente mais tarde.</p>'
-        }
-    }
-
-    // 5. Chama a função para carregar as oficinas
-    carregarOficinas()
-    
-}) 
-    
+})
 </script>
 
 </html>
-
-
-
