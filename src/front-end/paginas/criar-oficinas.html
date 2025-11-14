@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Oficina</title>
-    <script src="/env.js"></script>
-    <script src="../scripts/criar-oficinas.js" defer></script>
     <link rel="stylesheet" href="../style/criarOficinas.css">
 </head>
 <body>
@@ -53,22 +51,44 @@
             </div>
             <button type="submit">Criar Oficina</button>
         </form>
-
-        <hr style="margin: 40px 0; border-color: #ccc;">
-
-        <h2>Alterar Oficina</h2>
-        <div class="search-edit-container">
-            <div class="form-group">
-                <label for="searchId">ID da Oficina</label>
-                <input type="text" id="searchId" placeholder="Cole o ID da oficina aqui...">
-            </div>
-            <button id="searchOficinaBtn">Buscar Oficina</button>
-            <button id="cancelEditBtn" style="display:none; background-color: #aaadaf;">Cancelar Edição</button>
-        </div>
-        <div id="editMessage" style="margin-top: 15px;"></div>
-        </div>
+    </div>
 </body>
 <script>
-// O <script> inline pode ficar vazio, já que estamos a usar o .js externo
+document.addEventListener('DOMContentLoaded', function () {
+    
+    const loginBtn = document.getElementById('loginBtn')
+    const cadastroBtn = document.getElementById('cadastroBtn')
+    const logoutBtn = document.getElementById('logoutBtn')
+    const perfilBtn = document.getElementById('perfilBtn')
+    const criarOficinaBtn = document.getElementById('criarOficinaBtn')
+
+    loginBtn.style.display = 'none'
+    cadastroBtn.style.display = 'none'
+    logoutBtn.style.display = 'none'
+    perfilBtn.style.display = 'none'
+
+    if (criarOficinaBtn) {
+        const isAdmin = localStorage.getItem('isAdmin') === 'true'
+        criarOficinaBtn.style.display = isAdmin ? 'inline-block' : 'none'
+    }
+
+    const token = localStorage.getItem('token')
+    if (token) {
+        logoutBtn.style.display = 'inline-block'
+        perfilBtn.style.display = 'inline-block'
+    } else {
+        loginBtn.style.display = 'inline-block'
+        cadastroBtn.style.display = 'inline-block'
+    }
+
+    logoutBtn.addEventListener('click', function (e) {
+        e.preventDefault()
+        localStorage.removeItem('token')
+        localStorage.removeItem('isAdmin')
+        location.reload()
+    })
+})
 </script>
 </html>
+
+
