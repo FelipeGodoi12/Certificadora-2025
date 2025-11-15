@@ -1,3 +1,51 @@
+// Middleware de autenticação de usuário normal
+const authUser = require('../middlewares/authUser')
+
+// Rota para inscrever usuário em uma oficina
+router.post('/api/oficinas/:id/inscrever', authUser, async (req, res) => {
+    try {
+        const oficina = await Oficina.findById(req.params.id)
+        if (!oficina) return res.status(404).json({ message: 'Oficina não encontrada.' })
+
+        const User = require('../models/User')
+        const usuario = await User.findById(req.user.id)
+        if (!usuario) return res.status(404).json({ message: 'Usuário não encontrado.' })
+
+        // Verifica se já está inscrito
+        if (oficina.inscritos.includes(usuario._id)) {
+            return res.status(400).json({ message: 'Usuário já inscrito nesta oficina.' })
+        }
+
+        oficina.inscritos.push(usuario._id)
+        usuario.oficinasInscritas.push(oficina._id)
+        await oficina.save()
+        await usuario.save()
+        res.status(200).json({ message: 'Inscrição realizada com sucesso.' })
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao inscrever na oficina.' })
+    }
+})
+
+// Rota para cancelar inscrição
+router.delete('/api/oficinas/:id/cancelar', authUser, async (req, res) => {
+    try {
+        const oficina = await Oficina.findById(req.params.id)
+        if (!oficina) return res.status(404).json({ message: 'Oficina não encontrada.' })
+
+        const User = require('../models/User')
+        const usuario = await User.findById(req.user.id)
+        if (!usuario) return res.status(404).json({ message: 'Usuário não encontrado.' })
+
+        // Remove o usuário do array de inscritos
+        oficina.inscritos = oficina.inscritos.filter(id => id.toString() !== usuario._id.toString())
+        usuario.oficinasInscritas = usuario.oficinasInscritas.filter(id => id.toString() !== oficina._id.toString())
+        await oficina.save()
+        await usuario.save()
+        res.status(200).json({ message: 'Inscrição cancelada com sucesso.' })
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao cancelar inscrição.' })
+    }
+})
 const express = require('express')
 const router = express.Router()
 const Oficina = require('../models/Oficinas')

@@ -17,14 +17,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         if (resposta.ok && resultado.token) {
             localStorage.setItem('token', resultado.token)
             localStorage.setItem('isAdmin', resultado.admin)
-            msg.textContent = 'Login realizado com sucesso'
+            alert('Login realizado com sucesso')
             window.location.href = '/'
         } else {
-            msg.textContent = resultado.erro || 'Email ou senha incorretos!'
+            alert(resultado.erro || 'Email ou senha incorretos!')
         }
     } catch (error) {
         console.log(error)
-        document.getElementById('mensagem').textContent = 'Erro ao conectar com o servidor.'
+        alert('Erro ao conectar com o servidor.')
     }
 })
 

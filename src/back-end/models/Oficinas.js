@@ -9,7 +9,8 @@ const oficinaSchema = new mongoose.Schema({
     vagas: { type: Number, required: true },      
     status: { type: Boolean, default: true},
     createdAt: { type: Date, default: Date.now },
-    criador: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+    criador: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    inscritos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, {
     versionKey: false
 })

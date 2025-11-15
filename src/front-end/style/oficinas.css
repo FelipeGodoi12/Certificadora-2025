@@ -1,3 +1,17 @@
+/* === Guia de Estilo Institucional === */
+:root {
+  --color-primary: #0056b3;
+  --color-primary-hover: #004085;
+  --color-text-primary: #212529;
+  --color-text-secondary: #495057;
+  --color-background: #ffffff;
+  --color-background-accent: #f8f9fa;
+  --color-border: #dee2e6;
+  --border-radius-s: 4px;
+  --border-radius-m: 8px;
+  --shadow-soft: 0 4px 12px rgba(0,0,0,0.05);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,8 +20,9 @@
 
 body {
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  background: #f4f4f4;
-  color: #2d3748;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  line-height: 1.6;
 }
 
 /*=======Barra de navegação=======*/
@@ -19,8 +34,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0 44px;
-  background: linear-gradient(90deg, #f4f4f4 60%, #e0e7ff 100%);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
   height: 64px;
 }
 
@@ -40,29 +55,31 @@ a {
   display: block;
   padding: 14px 22px;
   text-decoration: none;
-  color: #3730a3;
-  font-weight: 500;
-  border-radius: 8px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  border-radius: var(--border-radius-m);
   transition: background 0.18s, color 0.18s;
   cursor: pointer;
-  background: #fafbfc;
+  background: transparent;
   text-align: center;
 }
 .Item:hover {
-  background: #e0e7ff;
-  color: #4f46e5;
+  background: var(--color-background-accent);
+  color: var(--color-primary);
 }
 
 /*=======Bloco principal da página=======*/
 .block {
   margin: auto;
   max-width: 1250px;
-  background-color: #e0e7ff;
+  background-color: var(--color-background-accent);
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-soft);
   font-size: 16px;
-  color: #333;
+  color: var(--color-text-secondary);
   text-align: justify;
+  border-radius: var(--border-radius-m);
+  border: 1px solid var(--color-border);
 }
 
 .search-container {
@@ -71,22 +88,22 @@ a {
 }
 .search {
   padding: 7px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  border-radius: var(--border-radius-s);
+  border: 1px solid var(--color-border);
 }
 .search_bt {
   margin-left: 8px;
-  border-radius: 4px;
-  background: #4f46e5;
+  border-radius: var(--border-radius-s);
+  background: var(--color-primary);
   color: #fff;
   border: none;
   padding: 8px 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
 }
 .search_bt:hover {
-  background: #6366f1;
+  background-color: var(--color-primary-hover);
 }
 
 /* ======= TABS ======= */
@@ -97,28 +114,28 @@ a {
   justify-content: center;
 }
 .tab-active {
-  background: #4f46e5;
+  background: var(--color-primary);
   color: #fff;
   border: none;
   padding: 12px 32px;
   border-radius: 24px 24px 0 0;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(79,70,229,0.08);
+  box-shadow: var(--shadow-soft);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
 }
 .tab-inactive {
-  background: #e0e0e0;
-  color: #4a5568;
+  background: var(--color-background-accent);
+  color: var(--color-text-secondary);
   border: none;
   padding: 12px 32px;
   border-radius: 24px 24px 0 0;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
 }
 .tab-active:hover, .tab-inactive:hover {
-  background: #6366f1;
+  background-color: var(--color-primary-hover);
   color: #fff;
 }
 
@@ -131,43 +148,55 @@ a {
 }
 
 .workshop-card {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  background: var(--color-background);
+  border-radius: var(--border-radius-m);
+  box-shadow: var(--shadow-soft);
   padding: 28px 22px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-border);
   transition: box-shadow 0.2s, transform 0.2s;
 }
 .workshop-card:hover {
-  box-shadow: 0 6px 24px rgba(79,70,229,0.13);
+  box-shadow: 0 6px 24px rgba(0,86,179,0.13);
   transform: translateY(-4px) scale(1.03);
-  border-color: #4f46e5;
+  border-color: var(--color-primary);
 }
 .workshop-card h3 {
   font-size: 1.2rem;
-  color: #3730a3;
+  color: var(--color-primary);
   margin-bottom: 10px;
 }
 .workshop-card p {
   font-size: 1rem;
-  color: #4a5568;
+  color: var(--color-text-secondary);
   margin-bottom: 8px;
 }
 .workshop-card button {
-  background: #4f46e5;
+  background: var(--color-primary);
   color: #fff;
   border: none;
   padding: 10px 24px;
   border-radius: 20px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
 }
 .workshop-card button:hover {
-  background: #6366f1;
+  background-color: var(--color-primary-hover);
+}
+
+h2 {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .workshop-list {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
 }
 
 @media (max-width: 900px) {

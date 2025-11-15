@@ -1,3 +1,17 @@
+/* === Guia de Estilo Institucional === */
+:root {
+  --color-primary: #0056b3;
+  --color-primary-hover: #004085;
+  --color-text-primary: #212529;
+  --color-text-secondary: #495057;
+  --color-background: #ffffff;
+  --color-background-accent: #f8f9fa;
+  --color-border: #dee2e6;
+  --border-radius-s: 4px;
+  --border-radius-m: 8px;
+  --shadow-soft: 0 4px 12px rgba(0,0,0,0.05);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,9 +20,10 @@
 
 body {
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  background: #f4f4f4;
-  color: #2d3748;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
   text-align: center;
+  line-height: 1.6;
 }
 
 /*=======Barra de navegação=======*/
@@ -20,8 +35,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0 44px;
-  background: linear-gradient(90deg, #f4f4f4 60%, #e0e7ff 100%);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
   height: 64px;
 }
 
@@ -40,56 +55,68 @@ a {
   display: block;
   padding: 14px 22px;
   text-decoration: none;
-  color: #3730a3;
-  font-weight: 500;
-  border-radius: 8px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  border-radius: var(--border-radius-m);
   transition: background 0.18s, color 0.18s;
   cursor: pointer;
-  background: #fafbfc;
+  background: transparent;
   text-align: center;
 }
 .Item:hover {
-  background: #e0e7ff;
-  color: #4f46e5;
+  background: var(--color-background-accent);
+  color: var(--color-primary);
 }
 
 /*=======Login=======*/
-.login {
-  background-color: #e0e7ff;
-  border: 2px solid #ccc;
-  border-radius: 10px;
+.login, .cadastro {
+  background-color: var(--color-background-accent);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-m);
   padding: 32px 24px;
   width: 340px;
   margin: 100px auto;
   text-align: center;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  box-shadow: var(--shadow-soft);
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 30px;
 }
 
-input {
+input, textarea {
   padding: 10px;
-  border: 1px solid #aaa;
-  border-radius: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-s);
   font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
 }
 
 button[type="submit"] {
-  background: #4f46e5;
+  background-color: var(--color-primary);
   color: white;
   padding: 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--border-radius-m);
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
   margin-top: 10px;
 }
 button[type="submit"]:hover {
-  background: #6366f1;
+  background-color: var(--color-primary-hover);
+}
+
+h2 {
+  color: var(--color-text-primary);
+  font-weight: 700;
 }
