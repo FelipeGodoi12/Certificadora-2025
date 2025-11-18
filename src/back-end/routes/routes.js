@@ -14,14 +14,17 @@ router.get('/login', (req, res) => {
 
 router.get('/cadastro', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../../front-end/paginas/cadastro.html'))
-});
+})
 
 router.get('/oficinas', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../../front-end/paginas/oficinas.html'))
-});
+})
 
 router.get('/criar-oficinas', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../../front-end/paginas/criar-oficinas.html'))
-});
+})
+
+
+
 
 module.exports = router

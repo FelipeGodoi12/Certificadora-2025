@@ -1,83 +1,14 @@
-// Middleware de autenticação de usuário normal
-const authUser = require('../middlewares/authUser')
-
-// Rota para inscrever usuário em uma oficina
-router.post('/api/oficinas/:id/inscrever', authUser, async (req, res) => {
-    try {
-        const oficina = await Oficina.findById(req.params.id)
-        if (!oficina) return res.status(404).json({ message: 'Oficina não encontrada.' })
-
-        const User = require('../models/User')
-        const usuario = await User.findById(req.user.id)
-        if (!usuario) return res.status(404).json({ message: 'Usuário não encontrado.' })
-
-        // Verifica se já está inscrito
-        if (oficina.inscritos.includes(usuario._id)) {
-            return res.status(400).json({ message: 'Usuário já inscrito nesta oficina.' })
-        }
-
-        oficina.inscritos.push(usuario._id)
-        usuario.oficinasInscritas.push(oficina._id)
-        await oficina.save()
-        await usuario.save()
-        res.status(200).json({ message: 'Inscrição realizada com sucesso.' })
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao inscrever na oficina.' })
-    }
-})
-
-// Rota para cancelar inscrição
-router.delete('/api/oficinas/:id/cancelar', authUser, async (req, res) => {
-    try {
-        const oficina = await Oficina.findById(req.params.id)
-        if (!oficina) return res.status(404).json({ message: 'Oficina não encontrada.' })
-
-        const User = require('../models/User')
-        const usuario = await User.findById(req.user.id)
-        if (!usuario) return res.status(404).json({ message: 'Usuário não encontrado.' })
-
-        // Remove o usuário do array de inscritos
-        oficina.inscritos = oficina.inscritos.filter(id => id.toString() !== usuario._id.toString())
-        usuario.oficinasInscritas = usuario.oficinasInscritas.filter(id => id.toString() !== oficina._id.toString())
-        await oficina.save()
-        await usuario.save()
-        res.status(200).json({ message: 'Inscrição cancelada com sucesso.' })
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao cancelar inscrição.' })
-    }
-})
 const express = require('express')
 const router = express.Router()
 const Oficina = require('../models/Oficinas')
 const authAdmin = require('../middlewares/authAdmin')
-
-// Rota de listagem (para a página de oficinas)
-// (Modificada para incluir a pesquisa)
-router.get('/oficinas/list', async (req, res) => {
-  try {
-    const { search } = req.query;
-    let filtro = {}; 
-    
-    if (search) {
-      filtro = {
-        $or: [
-          { nome: { $regex: search, $options: 'i' } },
-          { professor: { $regex: search, $options: 'i' } }
-        ]
-      };
-    }
-    const oficinas = await Oficina.find(filtro);
-    res.status(200).json(oficinas);
-  } catch (err) {
-    res.status(500).json({ message: "Erro ao buscar oficinas" });
-  }
-});
+const User = require('../models/User.js')
 
 
-// Rota para CRIAR oficina (MODIFICADA)
-// 1. Adicionámos o middleware authAdmin
-// 2. Adicionámos o req.user.id ao campo 'criador'
-router.post('/criar-oficina', authAdmin, async (req, res) => {
+// Criar, Editar, Listar
+
+
+router.post('/criar-oficina', async (req, res) => {
     try {
         const { titulo, professor, descricao, data, horario, vagas } = req.body
 
@@ -91,66 +22,82 @@ router.post('/criar-oficina', authAdmin, async (req, res) => {
             descricao: descricao,
             data: new Date(`${data}T${horario}`), 
             horario: horario,
-            vagas: vagas,
-            criador: req.user.id // Salva quem criou
+            vagas: vagas
         })
 
         await novaOficina.save()
 
-        res.status(201).json({ message: 'Oficina criada com sucesso!', oficina: novaOficina })
+        res.status(201).json({ message: 'Oficina criada com sucesso!' })
     } catch (error) {
         console.error(error)
         res.status(500).json({ message: 'Erro ao criar oficina.' })
     }
 })
 
-// --- NOVAS ROTAS PARA EDIÇÃO ---
+router.get('/oficinas/list', async (req, res) => {
+  try {
+    const oficinas = await Oficina.find()
+    res.status(200).json(oficinas)
+  } catch (err) {
+    res.status(500).json({ message: "Erro ao buscar oficinas" })
+  }
+})
 
-// Rota para BUSCAR UMA oficina por ID
-router.get('/api/oficinas/:id', authAdmin, async (req, res) => {
-    try {
-        const oficina = await Oficina.findById(req.params.id);
-        if (!oficina) {
-            return res.status(404).json({ message: 'Oficina não encontrada.' });
-        }
-        res.status(200).json(oficina);
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao buscar oficina.' });
+//====================================================================================//
+
+
+
+// Inscrever, cancelar inscrição
+
+//so pra vc lembrar amanha, ta dando pra se inscrever pelo insomnia, so precisa ver se essa inscrição existe dps
+
+router.post('/oficinas/inscrever', async (req, res) => {
+  try {
+    const { email, nome } = req.body
+    
+    if (!email || !nome) {
+      return res.status(400).json({ msg: 'Email e nome da oficina são obrigatórios.' })
     }
-});
 
-// Rota para ATUALIZAR UMA oficina por ID
-router.put('/api/oficinas/:id', authAdmin, async (req, res) => {
-    try {
-        const { titulo, professor, descricao, data, horario, vagas } = req.body;
-        
-        const oficina = await Oficina.findById(req.params.id);
-        if (!oficina) {
-            return res.status(404).json({ message: 'Oficina não encontrada.' });
-        }
+    // Encontrar usuário e oficina
+    const user = await User.findOne({ email })
+    const oficina = await Oficina.findOne({ nome: nome })
 
-        // REGRA DE NEGÓCIO: Só o criador pode editar
-        if (oficina.criador.toString() !== req.user.id) {
-            return res.status(403).json({ message: 'Acesso negado. Você não é o criador desta oficina.' });
-        }
+    
+      
+    if (!user) return res.status(404).json({ msg: 'Usuário não encontrado.' })
+    if (!oficina) return res.status(404).json({ msg: 'Oficina não encontrada.' })
 
-        // Atualiza os campos
-        oficina.nome = titulo;
-        oficina.professor = professor;
-        oficina.descricao = descricao;
-        oficina.data = new Date(`${data}T${horario}`);
-        oficina.horario = horario;
-        oficina.vagas = vagas;
-
-        await oficina.save();
-
-        res.status(200).json({ message: 'Oficina atualizada com sucesso!', oficina: oficina });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Erro ao atualizar oficina.' });
+    // Verifica se já está inscrito
+    if (user.oficinasInscritas.includes(oficina._id)) {
+      return res.status(409).json({ msg: 'Usuário já inscrito nesta oficina.' })
     }
-});
+
+    // Verifica vagas disponíveis
+    if (oficina.inscritos.length >= oficina.vagas) {
+      return res.status(403).json({ msg: 'Oficina sem vagas disponíveis.' })
+    }
+
+    // Efetua a inscrição
+    user.oficinasInscritas.push(oficina._id)
+    oficina.inscritos.push(user._id)
+
+    await user.save()
+    await oficina.save()
+    console.log("Depois de salvar")
+
+    res.status(200).json({ msg: 'Inscrição realizada com sucesso!' })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ msg: 'Erro ao realizar inscrição' })
+  }
+})
+
+// Cancelar inscrição de usuário em uma oficina
+router.post('/oficinas/cancelar', async (req, res) => {
+  
+})
+
 
 
 module.exports = router
