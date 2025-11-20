@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return
         }
         try {
-            const response = await fetch('http://localhost:3000/oficinas/inscrever', {
+            const response = await fetch('https://certificadora-2025-11.onrender.com/oficinas/inscrever', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return
         }
         try {
-            const response = await fetch('http://localhost:3000/oficinas/cancelar', {
+            const response = await fetch('https://certificadora-2025-11.onrender.com/oficinas/cancelar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
