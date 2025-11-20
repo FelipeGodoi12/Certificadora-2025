@@ -43,13 +43,55 @@ router.get('/oficinas/list', async (req, res) => {
   }
 })
 
+// BUSCAR UMA oficina por ID
+router.get('/api/oficinas/:id', authAdmin, async (req, res) => {
+    try {
+        const oficina = await Oficina.findById(req.params.id)
+        if (!oficina) {
+            return res.status(404).json({ message: 'Oficina não encontrada.' })
+        }
+        res.status(200).json(oficina)
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar oficina.' })
+    }
+})
+
+// ATUALIZAR UMA oficina por ID
+router.put('/api/oficinas/:id', authAdmin, async (req, res) => {
+    try {
+        const { titulo, professor, descricao, data, horario, vagas } = req.body
+        
+        const oficina = await Oficina.findById(req.params.id)
+        if (!oficina) {
+            return res.status(404).json({ message: 'Oficina não encontrada.' })
+        }
+
+        // REGRA DE NEGÓCIO: Só o criador pode editar
+        if (oficina.criador.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'Acesso negado. Você não é o criador desta oficina.' })
+        }
+
+        // Atualiza os campos
+        oficina.nome = titulo
+        oficina.professor = professor
+        oficina.descricao = descricao
+        oficina.data = new Date(`${data}T${horario}`)
+        oficina.horario = horario
+        oficina.vagas = vagas
+
+        await oficina.save()
+
+        res.status(200).json({ message: 'Oficina atualizada com sucesso!', oficina: oficina })
+
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Erro ao atualizar oficina.' })
+    }
+})
+
 //====================================================================================//
 
-
-
 // Inscrever, cancelar inscrição
-
-//so pra vc lembrar amanha, ta dando pra se inscrever pelo insomnia, so precisa ver se essa inscrição existe dps
 
 router.post('/oficinas/inscrever', async (req, res) => {
   try {
@@ -64,7 +106,6 @@ router.post('/oficinas/inscrever', async (req, res) => {
     const oficina = await Oficina.findOne({ nome: nome })
 
     
-      
     if (!user) return res.status(404).json({ msg: 'Usuário não encontrado.' })
     if (!oficina) return res.status(404).json({ msg: 'Oficina não encontrada.' })
 
@@ -84,7 +125,6 @@ router.post('/oficinas/inscrever', async (req, res) => {
 
     await user.save()
     await oficina.save()
-    console.log("Depois de salvar")
 
     res.status(200).json({ msg: 'Inscrição realizada com sucesso!' })
   } catch (err) {
@@ -95,7 +135,48 @@ router.post('/oficinas/inscrever', async (req, res) => {
 
 // Cancelar inscrição de usuário em uma oficina
 router.post('/oficinas/cancelar', async (req, res) => {
-  
+    const { email, nome } = req.body
+
+    if (!email || !nome) {
+        return res.status(400).json({ erro: "Email e nome da oficina são obrigatórios" })
+    }
+
+    try {
+        // Busca o usuário pelo email
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.status(404).json({ erro: "Usuário não encontrado" })
+        }
+
+        // Busca a oficina pelo nome
+        const oficina = await Oficina.findOne({ nome })
+        if (!oficina) {
+            return res.status(404).json({ erro: "Oficina não encontrada" })
+        }
+
+        // Remover o ObjectId do usuário do array 'inscritos'
+        const beforeCount = oficina.inscritos.length
+        oficina.inscritos = oficina.inscritos.filter(
+            inscritoId => inscritoId.toString() !== user._id.toString()
+        )
+        const afterCount = oficina.inscritos.length
+
+        user.oficinasInscritas = (user.oficinasInscritas || []).filter(
+          oficinaId => oficinaId.toString() !== oficina._id.toString()
+        )
+        await user.save()
+
+        if (beforeCount === afterCount) {
+            return res.status(400).json({ erro: "Usuário não está inscrito nesta oficina" })
+        }
+
+        await oficina.save()
+
+        res.json({ msg: "Inscrição cancelada com sucesso" })
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ erro: "Erro ao cancelar inscrição" })
+    }
 })
 
 

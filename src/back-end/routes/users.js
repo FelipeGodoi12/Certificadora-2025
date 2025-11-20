@@ -30,7 +30,7 @@ router.post('/cadastro', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body
-  console.log(req.body)
+  
   try {
     const usuario = await User.findOne({ email })
     if (!usuario) {
@@ -44,8 +44,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
       { id: usuario._id, email: usuario.email }, SECRET, { expiresIn: '24h' }
     )
-    console.log(usuario.email)
-    console.log(usuario.admin)
+    
     return res.json({ token, admin: usuario.admin,
       mensagem: 'Login realizado com sucesso!'
     })

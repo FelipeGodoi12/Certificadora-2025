@@ -197,10 +197,7 @@ a {
     /*transition: box-shadow 0.2s;*/
     font-size:94%; 
 }
-/*
-.oficina-card:hover {
-    box-shadow: 0 6px 16px 0 #9996;
-}*/
+
 .oficina-card button {
     align-self: flex-end;
     background-color: #267cff;
@@ -213,6 +210,23 @@ a {
 }
 .oficina-card button:hover {
     background-color: #185cab;
+}
+
+.cancelar-btn {
+    background-color: #e53935 !important;
+    color: #fff !important;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s
+}
+
+
+
+.cancelar-btn:hover {
+    background: #c0392b
 }
 
 

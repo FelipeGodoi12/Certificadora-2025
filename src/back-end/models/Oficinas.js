@@ -7,7 +7,7 @@ const oficinaSchema = new mongoose.Schema({
     data: { type: Date, required: true },
     horario: { type: String, required: true },    
     vagas: { type: Number, required: true },      
-    status: { type: String, default: "não-finalizada"},
+    status: { type: String, default: "Aberta"},
     inscritos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     createdAt: { type: Date, default: Date.now } 
 }, {

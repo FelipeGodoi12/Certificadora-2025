@@ -17,6 +17,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         if (resposta.ok && resultado.token) {
             localStorage.setItem('token', resultado.token)
             localStorage.setItem('isAdmin', resultado.admin)
+            localStorage.setItem('email', email)
             msg.textContent = 'Login realizado com sucesso'
             window.location.href = '/'
         } else {
