@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('oficinasContainer')
 
     // ---- BUSCA OFICINAS E RENDER ----
-    fetch('/oficinas/list')
+    fetch('https://certificadora-2025-11.onrender.com/oficinas/list')
         .then(res => res.json())
         .then(data => {
             oficinasData = data
@@ -161,5 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 })
+
 
 
