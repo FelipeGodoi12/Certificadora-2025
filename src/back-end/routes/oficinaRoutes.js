@@ -4,9 +4,27 @@ const Oficina = require('../models/Oficinas')
 const authAdmin = require('../middlewares/authAdmin')
 const User = require('../models/User.js')
 
+// Funções de gerenciamento de data 
+
+async function atualizarStatusOficinas() {
+    const agora = new Date()
+    await Oficina.updateMany(
+        { status: 'Aberta', data: { $lte: agora } },
+        { $set: { status: 'finalizada' } }
+    )
+}
+
+router.get('/', async (req, res) => {
+    try {
+        await atualizarStatusOficinas() // Chama antes de buscar
+        const oficinas = await Oficina.find({})
+        res.json(oficinas)
+    } catch (err) {
+        res.status(500).json({ erro: 'Erro ao buscar oficinas' })
+    }
+})
 
 // Criar, Editar, Listar
-
 
 router.post('/criar-oficina', async (req, res) => {
     try {
@@ -35,6 +53,7 @@ router.post('/criar-oficina', async (req, res) => {
 })
 
 router.get('/oficinas/list', async (req, res) => {
+  await atualizarStatusOficinas()
   try {
     const oficinas = await Oficina.find()
     res.status(200).json(oficinas)
@@ -94,7 +113,8 @@ router.put('/api/oficinas/:id', authAdmin, async (req, res) => {
 // Inscrever, cancelar inscrição
 
 router.post('/oficinas/inscrever', async (req, res) => {
-  try {
+    await atualizarStatusOficinas()
+    try {
     const { email, nome } = req.body
     
     if (!email || !nome) {
@@ -105,6 +125,10 @@ router.post('/oficinas/inscrever', async (req, res) => {
     const user = await User.findOne({ email })
     const oficina = await Oficina.findOne({ nome: nome })
 
+    /*Verifica se a oficina já foi encerrada ou ainda está aberta*/
+    if (oficina.status !== 'Aberta') {
+      return res.status(400).json({ msg: 'Oficina encerrada para inscrições' })
+    }
     
     if (!user) return res.status(404).json({ msg: 'Usuário não encontrado.' })
     if (!oficina) return res.status(404).json({ msg: 'Oficina não encontrada.' })
@@ -135,6 +159,7 @@ router.post('/oficinas/inscrever', async (req, res) => {
 
 // Cancelar inscrição de usuário em uma oficina
 router.post('/oficinas/cancelar', async (req, res) => {
+    await atualizarStatusOficinas()
     const { email, nome } = req.body
 
     if (!email || !nome) {
@@ -152,6 +177,10 @@ router.post('/oficinas/cancelar', async (req, res) => {
         const oficina = await Oficina.findOne({ nome })
         if (!oficina) {
             return res.status(404).json({ erro: "Oficina não encontrada" })
+        }
+
+        if (oficina.status !== 'Aberta') {
+            return res.status(400).json({ msg: 'Erro ao cancelar: oficina encerrada' })
         }
 
         // Remover o ObjectId do usuário do array 'inscritos'
