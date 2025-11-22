@@ -1,68 +1,76 @@
-document.querySelector('form').addEventListener('submit', async function(e) {
-    e.preventDefault();
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-    const nome = document.getElementById('nome').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('senha').value;
-    const confirmaSenha = document.getElementById('confirmaSenha').value;
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('senha').value;
+            const confirmaSenha = document.getElementById('confirmaSenha').value;
 
-     if (password.length < 6 || password.length > 12) {
-        alert('A senha deve conter entre 6 e 12 caracteres!');
-        return;
+            if (password.length < 6 || password.length > 12) {
+                alert('A senha deve conter entre 6 e 12 caracteres!');
+                return;
+            }
+
+            if (password !== confirmaSenha) {
+                alert('As senhas não conferem!');
+                return;
+            }
+
+            try {
+                const res = await fetch('/users/cadastro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, email, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert('Cadastro realizado com sucesso');
+                    window.location.href = '/login';
+                } else {
+                    alert(data.erro || 'Erro ao cadastrar');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao conectar ao servidor');
+            }
+        });
     }
-
-    if (password !== confirmaSenha) {
-        alert('As senhas não conferem!');
-        return;
-    }
-
-    const res = await fetch(`${window.BASE_URL}/users/cadastro`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, email, password })
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-        alert('Cadastro realizado com sucesso')
-        window.location.href = '/login'
-    } else {
-        alert(data.erro || 'Erro')
-    }
-})
+});
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Update navigation based on authentication state
+    const loginBtn = document.querySelector('a[href="/login"]');
+    const cadastroBtn = document.querySelector('a[href="/cadastro"]');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const perfilBtn = document.getElementById('perfilBtn');
 
-    const loginBtn = document.getElementById('loginBtn')
-    const cadastroBtn = document.getElementById('cadastroBtn')
-    const logoutBtn = document.getElementById('logoutBtn')
-    const perfilBtn = document.getElementById('perfilBtn')
-    const criarOficinaBtn = document.getElementById('criarOficinaBtn')
-
-    loginBtn.style.display = 'none'
-    cadastroBtn.style.display = 'none'
-    logoutBtn.style.display = 'none'
-    perfilBtn.style.display = 'none'
-
-    if (criarOficinaBtn) {
-        const isAdmin = localStorage.getItem('isAdmin') === 'true'
-        criarOficinaBtn.style.display = isAdmin ? 'inline-block' : 'none'
-    }
-
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     if (token) {
-        logoutBtn.style.display = 'inline-block'
-        perfilBtn.style.display = 'inline-block'
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (cadastroBtn) cadastroBtn.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'inline-block';
+        if (perfilBtn) perfilBtn.style.display = 'inline-block';
     } else {
-        loginBtn.style.display = 'inline-block'
-        cadastroBtn.style.display = 'inline-block'
+        if (loginBtn) loginBtn.style.display = 'inline-block';
+        if (cadastroBtn) cadastroBtn.style.display = 'inline-block';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (perfilBtn) perfilBtn.style.display = 'none';
     }
 
-    logoutBtn.addEventListener('click', function (e) {
-        e.preventDefault()
-        localStorage.removeItem('token')
-        localStorage.removeItem('isAdmin')
-        location.reload()
-    })
-})
+    // Handle logout
+    const logoutElement = document.getElementById('logoutBtn');
+    if (logoutElement) {
+        logoutElement.addEventListener('click', function (e) {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('isAdmin');
+            location.reload();
+        });
+    }
+});

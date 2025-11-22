@@ -1,74 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Oficina</title>
-    <script src="/env.js"></script>
-    <script src="../scripts/criar-oficinas.js" defer></script>
+    <meta name="description" content="Criar e gerenciar oficinas - Plataforma de Oficinas Universitárias">
+    <title>Gerenciar Oficinas - UTFPR</title>
     <link rel="stylesheet" href="../style/criarOficinas.css">
 </head>
 <body>
+    <!-- HEADER & NAVIGATION -->
     <header>
-        <nav class="navBar">
-            <div class="div1">
+        <nav class="navBar" role="navigation" aria-label="Navegação Principal">
+            <div class="nav-brand">
+                <a href="/" class="logo">🎓 Oficinas UTFPR</a>
+            </div>
+            <div class="nav-left">
                 <a class="Item" href="/">Página Inicial</a>
                 <a class="Item" href="/oficinas">Oficinas</a>
-                <a class="Item" href="/criar-oficinas" id="criarOficinaBtn">Gerenciar Oficinas</a>
+                <a class="Item" href="/criar-oficinas" class="active">Gerenciar</a>
             </div>
-            <div class="div2">
+            <div class="nav-right">
                 <a class="Item" href="/login" id="loginBtn">Login</a>
                 <a class="Item" href="/cadastro" id="cadastroBtn">Cadastro</a>
-                <a class="Item" href="#" id="logoutBtn">Log Out</a>
-                <a class="Item" href="#" id="perfilBtn">Perfil</a>
+                <a class="Item" href="#" id="logoutBtn" style="display:none;">Sair</a>
+                <a class="Item" href="#" id="perfilBtn" style="display:none;">Perfil</a>
             </div>
         </nav>
     </header>
-    <div class="block">
-        <h2>Cadastrar Nova Oficina</h2>
-        <form class="create-workshop-form">
-            <div class="form-group">
-                <label for="titulo">Título</label>
-                <input type="text" id="titulo" name="titulo" required>
-            </div>
-            <div class="form-group">
-                <label for="professor">Professor</label>
-                <input type="text" id="professor" name="professor" required>
-            </div>
-            <div class="form-group">
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" rows="5" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="data">Data</label>
-                <input type="date" id="data" name="data" required>
-            </div>
-            <div class="form-group">
-                <label for="horario">Horário</label>
-                <input type="time" id="horario" name="horario" required>
-            </div>
-            <div class="form-group">
-                <label for="vagas">Número de Vagas</label>
-                <input type="number" id="vagas" name="vagas" min="1" required>
-            </div>
-            <button type="submit">Criar Oficina</button>
-        </form>
 
-        <hr style="margin: 40px 0; border-color: #ccc;">
-
-        <h2>Alterar Oficina</h2>
-        <div class="search-edit-container">
-            <div class="form-group">
-                <label for="searchId">ID da Oficina</label>
-                <input type="text" id="searchId" placeholder="Cole o ID da oficina aqui...">
+    <main>
+        <!-- CREATE WORKSHOP SECTION -->
+        <section class="block">
+            <div class="section-header">
+                <h1>Criar Nova Oficina</h1>
+                <p>Preencha os dados abaixo para criar uma nova oficina</p>
             </div>
-            <button id="searchOficinaBtn">Buscar Oficina</button>
-            <button id="cancelEditBtn" style="display:none; background-color: #aaadaf;">Cancelar Edição</button>
+
+            <form class="create-workshop-form">
+                <div class="form-group">
+                    <label for="titulo">Título da Oficina *</label>
+                    <input 
+                        type="text" 
+                        id="titulo" 
+                        name="titulo" 
+                        placeholder="Digite um título atrativo"
+                        required
+                    >
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="professor">Professor Responsável *</label>
+                        <input 
+                            type="text" 
+                            id="professor" 
+                            name="professor" 
+                            placeholder="Nome do professor"
+                            required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="vagas">Número de Vagas *</label>
+                        <input 
+                            type="number" 
+                            id="vagas" 
+                            name="vagas" 
+                            min="1" 
+                            placeholder="Ex: 30"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição Detalhada *</label>
+                    <textarea 
+                        id="descricao" 
+                        name="descricao" 
+                        rows="5" 
+                        placeholder="Descreva os objetivos, conteúdo e metodologia da oficina"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="data">Data *</label>
+                        <input 
+                            type="date" 
+                            id="data" 
+                            name="data" 
+                            required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="horario">Horário de Início *</label>
+                        <input 
+                            type="time" 
+                            id="horario" 
+                            name="horario" 
+                            required
+                        >
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Criar Oficina</button>
+            </form>
+        </section>
+
+        <!-- DIVIDER -->
+        <hr class="section-divider">
+
+        <!-- EDIT WORKSHOP SECTION -->
+        <section class="block">
+            <div class="section-header">
+                <h1>Editar Oficina Existente</h1>
+                <p>Encontre e modifique uma oficina existente</p>
+            </div>
+
+            <div class="edit-container">
+                <div class="form-group">
+                    <label for="searchId">ID da Oficina</label>
+                    <input 
+                        type="text" 
+                        id="searchId" 
+                        placeholder="Cole o ID da oficina aqui..."
+                        aria-label="ID da Oficina"
+                    >
+                </div>
+                <div class="button-group">
+                    <button id="searchOficinaBtn" class="btn-secondary">Buscar Oficina</button>
+                    <button id="cancelEditBtn" class="btn-secondary" style="display:none;">Cancelar Edição</button>
+                </div>
+            </div>
+
+            <div id="editMessage" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 UTFPR - Plataforma de Oficinas. Todos os direitos reservados.</p>
         </div>
-        <div id="editMessage" style="margin-top: 15px;"></div>
-        </div>
+    </footer>
+
+    <script src="/env.js"></script>
+    <script src="../scripts/criar-oficinas.js"></script>
 </body>
-<script>
-// O <script> inline pode ficar vazio, já que estamos a usar o .js externo
-</script>
 </html>

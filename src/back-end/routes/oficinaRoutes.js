@@ -17,7 +17,7 @@ async function atualizarStatusOficinas() {
 router.get('/', async (req, res) => {
     try {
         await atualizarStatusOficinas() // Chama antes de buscar
-        const oficinas = await Oficina.find({})
+        const oficinas = await Oficina.find({}).populate('inscritos', 'email')
         res.json(oficinas)
     } catch (err) {
         res.status(500).json({ erro: 'Erro ao buscar oficinas' })
@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 
 // Criar, Editar, Listar
 
-router.post('/criar-oficina', async (req, res) => {
+router.post('/criar-oficina', authAdmin, async (req, res) => {
     try {
         const { titulo, professor, descricao, data, horario, vagas } = req.body
 
@@ -56,6 +56,16 @@ router.get('/oficinas/list', async (req, res) => {
   await atualizarStatusOficinas()
   try {
     const oficinas = await Oficina.find()
+    res.status(200).json(oficinas)
+  } catch (err) {
+    res.status(500).json({ message: "Erro ao buscar oficinas" })
+  }
+})
+
+router.get('/api/oficinas', async (req, res) => {
+  await atualizarStatusOficinas()
+  try {
+    const oficinas = await Oficina.find({}).populate('inscritos', 'email')
     res.status(200).json(oficinas)
   } catch (err) {
     res.status(500).json({ message: "Erro ao buscar oficinas" })
@@ -108,22 +118,21 @@ router.put('/api/oficinas/:id', authAdmin, async (req, res) => {
     }
 })
 
-//====================================================================================//
-
 // Inscrever, cancelar inscrição
 
-router.post('/oficinas/inscrever', async (req, res) => {
+router.post('/api/oficinas/:id/inscrever', async (req, res) => {
     await atualizarStatusOficinas()
     try {
-    const { email, nome } = req.body
+    const { email } = req.body
+    const oficinasId = req.params.id
     
-    if (!email || !nome) {
-      return res.status(400).json({ msg: 'Email e nome da oficina são obrigatórios.' })
+    if (!email || !oficinasId) {
+      return res.status(400).json({ msg: 'Email e ID da oficina são obrigatórios.' })
     }
 
     // Encontrar usuário e oficina
     const user = await User.findOne({ email })
-    const oficina = await Oficina.findOne({ nome: nome })
+    const oficina = await Oficina.findById(oficinasId)
 
     /*Verifica se a oficina já foi encerrada ou ainda está aberta*/
     if (oficina.status !== 'Aberta') {
@@ -158,12 +167,13 @@ router.post('/oficinas/inscrever', async (req, res) => {
 })
 
 // Cancelar inscrição de usuário em uma oficina
-router.post('/oficinas/cancelar', async (req, res) => {
+router.delete('/api/oficinas/:id/cancelar', async (req, res) => {
     await atualizarStatusOficinas()
-    const { email, nome } = req.body
+    const { email } = req.body
+    const oficinasId = req.params.id
 
-    if (!email || !nome) {
-        return res.status(400).json({ erro: "Email e nome da oficina são obrigatórios" })
+    if (!email || !oficinasId) {
+        return res.status(400).json({ erro: "Email e ID da oficina são obrigatórios" })
     }
 
     try {
@@ -173,8 +183,8 @@ router.post('/oficinas/cancelar', async (req, res) => {
             return res.status(404).json({ erro: "Usuário não encontrado" })
         }
 
-        // Busca a oficina pelo nome
-        const oficina = await Oficina.findOne({ nome })
+        // Busca a oficina pelo ID
+        const oficina = await Oficina.findById(oficinasId)
         if (!oficina) {
             return res.status(404).json({ erro: "Oficina não encontrada" })
         }

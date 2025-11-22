@@ -1,36 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oficinas</title>
-    <script src="/env.js"></script>
-    <script src="../scripts/oficinas.js" defer></script>
+    <meta name="description" content="Explore as oficinas disponíveis - Plataforma de Oficinas Universitárias">
+    <title>Oficinas Disponíveis - UTFPR</title>
     <link rel="stylesheet" href="../style/oficinas.css">
 </head>
 <body>
+    <!-- HEADER & NAVIGATION -->
     <header>
-        <nav class="navBar">
-            <div class="div1">
-                <a class="Item" href="/">Página Inicial</a>
-                <a class="Item" href="/oficinas">Oficinas</a>
-                <a class="Item" href="/criar-oficinas" id="criarOficinaBtn">Gerenciar Oficinas</a>
+        <nav class="navBar" role="navigation" aria-label="Navegação Principal">
+            <div class="nav-brand">
+                <a href="/" class="logo">🎓 Oficinas UTFPR</a>
             </div>
-            <div class="div2">
+            <div class="nav-left">
+                <a class="Item" href="/">Página Inicial</a>
+                <a class="Item" href="/oficinas" class="active">Oficinas</a>
+                <a class="Item" href="/criar-oficinas">Gerenciar</a>
+            </div>
+            <div class="nav-right">
                 <a class="Item" href="/login" id="loginBtn">Login</a>
                 <a class="Item" href="/cadastro" id="cadastroBtn">Cadastro</a>
-                <a class="Item" href="#" id="logoutBtn">Log Out</a>
-                <a class="Item" href="#" id="perfilBtn">Perfil</a>
+                <a class="Item" href="#" id="logoutBtn" style="display:none;">Sair</a>
+                <a class="Item" href="#" id="perfilBtn" style="display:none;">Perfil</a>
             </div>
         </nav>
     </header>
-    <div class="block">
-        <div class="search-container">
-            <input placeholder="pesquisar" class="search" id="searchInput">
-            <button class="search_bt" id="searchBtn"><img src="../imgs/lupa2.png" height="25" width="25"></button>
-        </div>
-        <div class="oficinas-lista" id="oficinasContainer"></div>
-    </div>
-</body>
 
+    <main>
+        <div class="block">
+            <!-- SEARCH BAR -->
+            <div class="search-container">
+                <input 
+                    placeholder="Pesquisar oficinas..." 
+                    class="search" 
+                    id="searchInput"
+                    aria-label="Pesquisar oficinas"
+                >
+                <button class="search_bt" id="searchBtn" aria-label="Buscar">
+                    🔍
+                </button>
+            </div>
+
+            <!-- WORKSHOPS LIST -->
+            <section class="workshops-section">
+                <div class="oficinas-lista" id="oficinasContainer" role="region" aria-live="polite">
+                    <!-- Oficinas carregadas dinamicamente -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 UTFPR - Plataforma de Oficinas. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="/env.js"></script>
+    <script src="../scripts/oficinas.js"></script>
+</body>
 </html>

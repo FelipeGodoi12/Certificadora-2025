@@ -21,7 +21,7 @@ app.get('/env.js', (req, res) => {
 });
 
 app.use(cors({
-  origin: 'https://certificadora-2025-13.onrender.com',
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'https://certificadora-2025-13.onrender.com'],
   credentials: true
 }))
 

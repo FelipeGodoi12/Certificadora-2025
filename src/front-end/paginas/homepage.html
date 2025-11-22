@@ -1,53 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/env.js"></script>
-    <script src="../scripts/homepage.js" defer></script>
-    <title>Página Inicial</title>
+    <meta name="description" content="Plataforma de Oficinas Universitárias - Organize, participe e receba certificações">
+    <title>Plataforma de Oficinas Universitárias - UTFPR</title>
     <link rel="stylesheet" href="../style/mainpage.css">
 </head>
 <body>
+    <!-- HEADER & NAVIGATION -->
     <header>
-        <nav class="navBar">
-            <div class="div1">
+        <nav class="navBar" role="navigation" aria-label="Navegação Principal">
+            <div class="nav-brand">
+                <a href="/" class="logo">🎓 Oficinas UTFPR</a>
+            </div>
+            <div class="nav-left">
                 <a class="Item" href="/">Página Inicial</a>
                 <a class="Item" href="/oficinas">Oficinas</a>
-                <a class="Item" href="/criar-oficinas" id="criarOficinaBtn">Gerenciar Oficinas</a>
+                <a class="Item" href="/criar-oficinas">Gerenciar</a>
             </div>
-            <div class="div2">
-                <a class="Item" href="/login" id="loginBtn">Login</a>
-                <a class="Item" href="/cadastro" id="cadastroBtn">Cadastro</a>
-                <a class="Item" href="#" id="logoutBtn">Log Out</a>
-                <a class="Item" href="#" id="perfilBtn">Perfil</a>
+            <div class="nav-right">
+                <a class="Item" href="/login">Login</a>
+                <a class="Item" href="/cadastro">Cadastro</a>
+                <a class="Item" href="#" id="logoutBtn" style="display:none;">Sair</a>
+                <a class="Item" href="#" id="perfilBtn" style="display:none;">Perfil</a>
             </div>
         </nav>
     </header>
-    <div class="hero-container">
-        <h1>Plataforma de Oficinas Universitárias</h1>
-        <p>Organize, participe e receba certificações de oficinas de aprendizado da UTFPR.</p>
-        <a href="/oficinas" class="cta-button">Ver Oficinas</a>
-    </div>
-    <div class="features-container">
-        <div class="feature-card">
-            <div class="feature-icon">🔍</div>
-            <h2>Explore Oficinas</h2>
-            <p>Encontre oficinas abertas sobre diversos temas.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">📝</div>
-            <h2><a href="/criar-oficinas">Crie sua Oficina</a></h2>
-            <p>Professores e tutores podem criar e gerenciar suas próprias oficinas.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">🎓</div>
-            <h2>Receba seu Certificado</h2>
-            <p>Acesse seu histórico e certificados de participação.</p>
-        </div>
-    </div>
-</body>
 
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero-container" role="banner">
+            <div class="hero-content">
+                <h1>Plataforma de Oficinas Universitárias</h1>
+                <p>Explore, participe e receba certificações de oficinas de aprendizado da UTFPR</p>
+                <a href="/oficinas" class="cta-button">Explorar Oficinas</a>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="features-section">
+            <div class="features-container">
+                <article class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h2>Explore Oficinas</h2>
+                    <p>Encontre oficinas abertas sobre diversos temas de interesse e desenvolva novas habilidades.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h2>Crie Sua Oficina</h2>
+                    <p>Professores e tutores podem criar e gerenciar suas próprias oficinas facilmente.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">🎓</div>
+                    <h2>Receba Certificado</h2>
+                    <p>Obtenha certificados de participação e acesse seu histórico completo.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 UTFPR - Plataforma de Oficinas. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="/env.js"></script>
+    <script src="../scripts/homepage.js"></script>
+</body>
 </html>
 
 

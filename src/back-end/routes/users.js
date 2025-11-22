@@ -4,7 +4,7 @@ const User = require('../models/User.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-const SECRET = process.env.SECRET
+const SECRET = process.env.JWT_SECRET || process.env.SECRET
 
 // Cadastro 
 router.post('/cadastro', async (req, res) => {
@@ -18,7 +18,12 @@ router.post('/cadastro', async (req, res) => {
         if (existente) {
             return res.status(400).send({ erro: 'Este email já foi cadastrado' });
         }
-        const novoUsuario = new User({ nome, email, password })
+        
+        // Hash the password before saving
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        
+        const novoUsuario = new User({ nome, email, password: hashedPassword })
         await novoUsuario.save()
         res.status(201).send({ message: 'Usuário cadastrado com sucesso.' })
     } catch (error) {
@@ -36,7 +41,9 @@ router.post('/login', async (req, res) => {
     if (!usuario) {
       return res.status(401).json({ erro: 'Usuário não encontrado.' })
     }
-    const senhaConfere = password === usuario.password 
+    
+    // Compare hashed password
+    const senhaConfere = await bcrypt.compare(password, usuario.password)
     if (!senhaConfere) {
       return res.status(401).json({ erro: 'Senha incorreta.' })
     }
