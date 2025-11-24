@@ -115,26 +115,37 @@ router.get('/api/oficinas/:id', async (req, res) => {
 // ATUALIZAR OFICINA (ADMIN)
 // =========================
 
-router.put('/api/oficinas/:id', authAdmin, async (req, res) => {
+router.put('/api/oficinas/editar', authAdmin, async (req, res) => {
     try {
-        const { titulo, professor, descricao, data, horario, vagas } = req.body
+        // Recebemos 'nomeAtual' para achar a oficina e os dados novos
+        const { nomeAtual, titulo, professor, descricao, data, horario, vagas } = req.body
 
-        const oficina = await Oficina.findById(req.params.id)
+        if (!nomeAtual) {
+            return res.status(400).json({ message: 'O nome atual da oficina é obrigatório para a edição.' })
+        }
+
+        // 1. Busca pelo nome em vez do ID
+        const oficina = await Oficina.findOne({ nome: nomeAtual })
+        
         if (!oficina) {
             return res.status(404).json({ message: 'Oficina não encontrada.' })
         }
 
-        // Se você não tiver campo "criador" no schema, comente este bloco:
-        // if (oficina.criador && oficina.criador.toString() !== req.user.id) {
-        // 	return res.status(403).json({ message: 'Acesso negado. Você não é o criador desta oficina.' })
-        // }
+        // 2. Verificação de permissão (Só o criador pode editar)
+        // Se o admin não tiver o campo criador (oficinas antigas), essa verificação pode falhar ou precisa ser tratada
+        if (oficina.criador && oficina.criador.toString() !== req.user.id) {
+        	return res.status(403).json({ message: 'Acesso negado. Apenas o criador desta oficina pode alterá-la.' })
+        }
 
-        oficina.nome = titulo
-        oficina.professor = professor
-        oficina.descricao = descricao
-        oficina.data = new Date(`${data}T${horario}`)
-        oficina.horario = horario
-        oficina.vagas = vagas
+        // Atualiza os campos (note que 'titulo' no front vira 'nome' no banco)
+        if (titulo) oficina.nome = titulo
+        if (professor) oficina.professor = professor
+        if (descricao) oficina.descricao = descricao
+        if (data && horario) {
+            oficina.data = new Date(`${data}T${horario}`)
+            oficina.horario = horario
+        }
+        if (vagas) oficina.vagas = vagas
 
         await oficina.save()
 
@@ -283,3 +294,4 @@ router.delete('/api/oficinas/:id/cancelar', async (req, res) => {
 
 
 module.exports = router
+
