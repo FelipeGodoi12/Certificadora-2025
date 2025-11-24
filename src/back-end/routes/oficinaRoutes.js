@@ -55,7 +55,8 @@ router.post('/criar-oficina', authAdmin, async (req, res) => {
             descricao,
             data: new Date(`${data}T${horario}`),
             horario,
-            vagas
+            vagas,
+            criador: req.user.id
         })
 
         await novaOficina.save()
@@ -279,5 +280,6 @@ router.delete('/api/oficinas/:id/cancelar', async (req, res) => {
         res.status(500).json({ erro: 'Erro ao cancelar inscrição' })
     }
 })
+
 
 module.exports = router
