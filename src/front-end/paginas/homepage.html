@@ -8,25 +8,8 @@
     <link rel="stylesheet" href="../style/mainpage.css">
 </head>
 <body>
-    <!-- HEADER & NAVIGATION -->
-    <header>
-        <nav class="navBar" role="navigation" aria-label="Navegação Principal">
-            <div class="nav-brand">
-                <a href="/" class="logo">🎓 Oficinas UTFPR</a>
-            </div>
-            <div class="nav-left">
-                <a class="Item" href="/">Página Inicial</a>
-                <a class="Item" href="/oficinas">Oficinas</a>
-                <a class="Item" href="/criar-oficinas">Gerenciar</a>
-            </div>
-            <div class="nav-right">
-                <a class="Item" href="/login">Login</a>
-                <a class="Item" href="/cadastro">Cadastro</a>
-                <a class="Item" href="#" id="logoutBtn" style="display:none;">Sair</a>
-                <a class="Item" href="#" id="perfilBtn" style="display:none;">Perfil</a>
-            </div>
-        </nav>
-    </header>
+
+    <header id="main-header"></header>
 
     <main>
         <!-- HERO SECTION -->
@@ -68,6 +51,12 @@
     </footer>
 
     <script src="/env.js"></script>
+    <script src="../scripts/header.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            initHeader('home')
+        })
+    </script>
     <script src="../scripts/homepage.js"></script>
 </body>
 </html>

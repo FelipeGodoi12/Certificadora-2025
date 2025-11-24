@@ -1,14 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/User.js')
+
+require('dotenv').config()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-require('dotenv').config()
+const authUser = require('../middlewares/authUser')
 const SECRET = process.env.JWT_SECRET || process.env.SECRET
 
 // Cadastro 
 router.post('/cadastro', async (req, res) => {
-    console.log(req.body) 
     try {
         const { nome, email, password } = req.body
          if (!password || password.length < 6 || password.length > 12) {
@@ -49,7 +50,7 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: usuario._id, email: usuario.email }, SECRET, { expiresIn: '24h' }
+      { id: usuario._id, email: usuario.email, admin: usuario.admin }, SECRET, { expiresIn: '24h' }
     )
     
     return res.json({ token, admin: usuario.admin,
@@ -57,7 +58,6 @@ router.post('/login', async (req, res) => {
     })
 
   } catch (erro) {
-    console.log(erro)
     return res.status(500).json({ erro: 'Erro interno no servidor.' })
   }
 })
@@ -83,7 +83,78 @@ router.get('/minhas-inscricoes', async (req, res) => {
   }
 })
 
+router.get('/minhas-oficinas', authUser, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+            .select('oficinasInscritas')
+            .populate({
+                path: 'oficinasInscritas.oficina',
+                model: 'oficina',
+            })
 
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado.' })
+        }
+
+        const ativas = []
+        const concluidas = []
+
+        user.oficinasInscritas.forEach((entry) => {
+            if (!entry.oficina) return
+
+            const o = entry.oficina
+
+            const item = {
+                id: o._id,
+                nome: o.nome,
+                descricao: o.descricao,
+                professor: o.professor,
+                data: o.data,
+                horario: o.horario,
+                statusInscricao: entry.status,
+                dataInscricao: entry.dataInscricao,
+                statusOficina: o.status,
+                vagasRestantes: o.vagas - o.inscritos.length,
+            }
+
+            const oficinaConcluida =
+                entry.status === 'concluido' ||
+                o.status === 'finalizada' ||
+                o.status === 'Concluída'
+
+            if (oficinaConcluida) {
+                concluidas.push(item)
+            } else {
+                ativas.push(item)
+            }
+        })
+
+        return res.json({ ativas, concluidas })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Erro ao carregar oficinas do usuário.' })
+    }
+})
+
+// Perfil do usuário logado
+router.get('/profile', authUser, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password')
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado.' })
+        }
+
+        res.json({
+            id: user._id,
+            nome: user.nome,
+            email: user.email,
+            admin: user.admin,
+        })
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ message: 'Erro ao carregar perfil.' })
+    }
+})
 
 
 module.exports = router

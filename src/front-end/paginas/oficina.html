@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes da Oficina - UTFPR</title>
+  <link rel="stylesheet" href="../style/oficinas.css">
+</head>
+<body>
+
+<header id="main-header"></header>
+
+<main>
+  <div class="block">
+    <section class="workshops-section">
+      <div id="detalhes-oficina" class="oficina-card">
+        <!-- Detalhes carregados via JS -->
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 UTFPR - Plataforma de Oficinas. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<script src="/env.js"></script>
+<script src="../scripts/header.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    initHeader('oficina')
+  })
+</script>
+<script src="../scripts/oficina.js"></script>
+</body>
+</html>

@@ -97,18 +97,21 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 buttonHTML = `<button class="inscrever-btn" disabled onclick="alert('Você precisa estar logado para se inscrever!')">Inscrever-se</button>`;
             }
-            
+
             card.innerHTML = `
                 <h3>${oficina.nome || ''}</h3>
+                <p class="descricao">${oficina.descricao || ''}</p>
                 <p><strong>Professor:</strong> ${oficina.professor || ''}</p>
                 <p><strong>Data:</strong> ${oficina.data ? new Date(oficina.data).toLocaleDateString('pt-BR') : ''}</p>
                 <p><strong>Horário:</strong> ${oficina.horario || ''}</p>
                 <p><strong>Vagas:</strong> ${oficina.inscritos ? oficina.inscritos.length : 0}/${oficina.vagas || ''}</p>
                 <p><strong>Status:</strong> <span style="color: ${statusColor}; background-color: ${statusBg}; padding: 4px 8px; border-radius: 4px; font-weight: bold;">${oficina.status || 'N/A'}</span></p>
-                <p class="descricao">${oficina.descricao || ''}</p>
+                
                 <div class="button-group">
                     ${buttonHTML}
+                    <a href="/oficina?id=${oficina._id}" class="inscrever-btn">Ver detalhes</a>
                 </div>
+                
             `;
             container.appendChild(card);
         });

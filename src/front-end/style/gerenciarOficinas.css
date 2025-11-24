@@ -1,0 +1,92 @@
+@import url('./oficinas.css');
+
+/* ======= PÁGINA GERENCIAR OFICINAS ======= */
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 12px;
+}
+
+.admin-header h2 {
+    margin: 0;
+}
+
+.admin-subtitle {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+/* Lista de oficinas para admin (usa o mesmo visual de cards) */
+#adminOficinasContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+/* Só garante que os cards do gerenciar sigam o padrão */
+#adminOficinasContainer .oficina-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+}
+
+/* Info de status / vagas com um pouco de respiro */
+#adminOficinasContainer .oficina-card p {
+    margin-bottom: 8px;
+}
+
+/* Agrupamento dos botões de status */
+#adminOficinasContainer .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+/* Botões de ação do admin usam o mesmo estilo base */
+#adminOficinasContainer .button-group .inscrever-btn,
+#adminOficinasContainer .button-group .cancelar-btn {
+    flex: 1 1 140px;
+}
+
+/* Badge simples para o status atual da oficina */
+.status-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border-radius: var(--border-radius-s);
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: var(--color-border-light);
+    color: var(--color-text-secondary);
+}
+
+/* Cores diferentes pra cada tipo de status */
+.status-label[data-status="Aberta"] {
+    background: rgba(40, 167, 69, 0.12);
+    color: #218838;
+}
+
+.status-label[data-status="Fechada"] {
+    background: rgba(255, 193, 7, 0.15);
+    color: #856404;
+}
+
+.status-label[data-status="finalizada"] {
+    background: rgba(0, 86, 179, 0.12);
+    color: var(--color-primary);
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+    #adminOficinasContainer {
+        grid-template-columns: 1fr;
+    }
+}

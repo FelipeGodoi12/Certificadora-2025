@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Criar e gerenciar oficinas - Plataforma de Oficinas Universitárias">
+    <title>Gerenciar Oficinas - UTFPR</title>
+    <link rel="stylesheet" href="../style/gerenciarOficinas.css">
+</head>
+<body>
+
+    <header id="main-header"></header>
+
+    <main>
+        <!-- MANAGE WORKSHOP SECTION -->
+        <section class="workshops-section">
+            <div class="oficinas-lista" id="adminOficinasContainer">
+                <a class="Item" href="/criar-oficinas" class="active">Criar nova oficina</a>
+                <!-- Oficinas para admin carregadas via JS -->
+            </div>
+        </section>
+
+        <!-- DIVIDER -->
+<!--        <hr class="section-divider">-->
+
+        <!-- EDIT WORKSHOP SECTION -->
+<!--        <section class="block">-->
+<!--            <div class="section-header">-->
+<!--                <h1>Editar Oficina Existente</h1>-->
+<!--                <p>Encontre e modifique uma oficina existente</p>-->
+<!--            </div>-->
+
+<!--            <div class="edit-container">-->
+<!--                <div class="form-group">-->
+<!--                    <label for="searchId">ID da Oficina</label>-->
+<!--                    <input-->
+<!--                        type="text"-->
+<!--                        id="searchId"-->
+<!--                        placeholder="Cole o ID da oficina aqui..."-->
+<!--                        aria-label="ID da Oficina"-->
+<!--                    >-->
+<!--                </div>-->
+<!--                <div class="button-group">-->
+<!--                    <button id="searchOficinaBtn" class="btn-secondary">Buscar Oficina</button>-->
+<!--                    <button id="cancelEditBtn" class="btn-secondary" style="display:none;">Cancelar Edição</button>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div id="editMessage" aria-live="polite"></div>-->
+<!--        </section>-->
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 UTFPR - Plataforma de Oficinas. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="/env.js"></script>
+    <script src="../scripts/header.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            initHeader('gerenciar')
+        })
+    </script>
+    <script src="../scripts/gerenciar-oficinas.js"></script>
+</body>
+</html>

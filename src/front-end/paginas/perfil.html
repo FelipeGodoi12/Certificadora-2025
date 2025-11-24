@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Perfil do usuário - Histórico de oficinas - Plataforma de Oficinas Universitárias">
+  <title>Meu Perfil - UTFPR</title>
+  <link rel="stylesheet" href="../style/oficinas.css">
+</head>
+<body>
+
+<header id="main-header"></header>
+
+<main>
+  <div class="block">
+    <!-- HEADER DO PERFIL -->
+    <section>
+      <h2>Meu Perfil</h2>
+
+      <div class="oficina-card">
+        <h3>Informações do Usuário</h3>
+        <p><strong>Nome:</strong> <span id="profile-nome"></span></p>
+        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+        <p><strong>Tipo de usuário:</strong> <span id="profile-role"></span></p>
+
+        <section id="admin-section" style="display:none; margin-top: 16px;">
+          <p><strong>Área do Administrador:</strong> você possui acesso a funcionalidades avançadas da plataforma.</p>
+        </section>
+      </div>
+    </section>
+
+    <!-- HISTÓRICO DE OFICINAS -->
+    <section class="workshops-section">
+      <h2 style="margin-top: 32px;">Minhas Oficinas</h2>
+      <h2>Oficinas Ativas</h2>
+      <div id="lista-ativas" class="workshop-list"></div>
+
+      <h2 style="margin-top: 32px;">Oficinas Concluídas</h2>
+      <div id="lista-concluidas" class="workshop-list"></div>
+
+      <!-- Usando a mesma grid de cartões das oficinas -->
+      <div id="lista-oficinas" class="workshop-list">
+        <!-- Conteúdo preenchido dinamicamente pelo perfil.js -->
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 UTFPR - Plataforma de Oficinas. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<script src="/env.js"></script>
+<script src="../scripts/header.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    initHeader('perfil')
+  })
+</script>
+<script src="../scripts/perfil.js"></script>
+</body>
+</html>

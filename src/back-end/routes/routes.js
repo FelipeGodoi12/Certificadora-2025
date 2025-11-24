@@ -1,9 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const jwt = require('jsonwebtoken')
 const path = require('path')
 
-//Página inicial
 router.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../../front-end/paginas/homepage.html'))
 })
@@ -20,11 +18,21 @@ router.get('/oficinas', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../../front-end/paginas/oficinas.html'))
 })
 
+router.get('/oficina', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../../front-end/paginas/oficina.html'))
+})
+
 router.get('/criar-oficinas', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../../front-end/paginas/criar-oficinas.html'))
 })
 
+router.get('/gerenciar-oficinas', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../../front-end/paginas/gerenciar-oficinas.html'))
+})
 
+router.get('/perfil', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../../front-end/paginas/perfil.html'))
+})
 
 
 module.exports = router

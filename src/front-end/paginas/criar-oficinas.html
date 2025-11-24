@@ -4,29 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Criar e gerenciar oficinas - Plataforma de Oficinas Universitárias">
-    <title>Gerenciar Oficinas - UTFPR</title>
+    <title>Criar Oficinas - UTFPR</title>
     <link rel="stylesheet" href="../style/criarOficinas.css">
 </head>
 <body>
-    <!-- HEADER & NAVIGATION -->
-    <header>
-        <nav class="navBar" role="navigation" aria-label="Navegação Principal">
-            <div class="nav-brand">
-                <a href="/" class="logo">🎓 Oficinas UTFPR</a>
-            </div>
-            <div class="nav-left">
-                <a class="Item" href="/">Página Inicial</a>
-                <a class="Item" href="/oficinas">Oficinas</a>
-                <a class="Item" href="/criar-oficinas" class="active">Gerenciar</a>
-            </div>
-            <div class="nav-right">
-                <a class="Item" href="/login" id="loginBtn">Login</a>
-                <a class="Item" href="/cadastro" id="cadastroBtn">Cadastro</a>
-                <a class="Item" href="#" id="logoutBtn" style="display:none;">Sair</a>
-                <a class="Item" href="#" id="perfilBtn" style="display:none;">Perfil</a>
-            </div>
-        </nav>
-    </header>
+
+    <header id="main-header"></header>
 
     <main>
         <!-- CREATE WORKSHOP SECTION -->
@@ -36,13 +19,13 @@
                 <p>Preencha os dados abaixo para criar uma nova oficina</p>
             </div>
 
-            <form class="create-workshop-form">
+            <form id="form-criar-oficina">
                 <div class="form-group">
                     <label for="titulo">Título da Oficina *</label>
-                    <input 
-                        type="text" 
-                        id="titulo" 
-                        name="titulo" 
+                    <input
+                        type="text"
+                        id="titulo"
+                        name="titulo"
                         placeholder="Digite um título atrativo"
                         required
                     >
@@ -51,21 +34,21 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="professor">Professor Responsável *</label>
-                        <input 
-                            type="text" 
-                            id="professor" 
-                            name="professor" 
+                        <input
+                            type="text"
+                            id="professor"
+                            name="professor"
                             placeholder="Nome do professor"
                             required
                         >
                     </div>
                     <div class="form-group">
                         <label for="vagas">Número de Vagas *</label>
-                        <input 
-                            type="number" 
-                            id="vagas" 
-                            name="vagas" 
-                            min="1" 
+                        <input
+                            type="number"
+                            id="vagas"
+                            name="vagas"
+                            min="1"
                             placeholder="Ex: 30"
                             required
                         >
@@ -74,10 +57,10 @@
 
                 <div class="form-group">
                     <label for="descricao">Descrição Detalhada *</label>
-                    <textarea 
-                        id="descricao" 
-                        name="descricao" 
-                        rows="5" 
+                    <textarea
+                        id="descricao"
+                        name="descricao"
+                        rows="5"
                         placeholder="Descreva os objetivos, conteúdo e metodologia da oficina"
                         required
                     ></textarea>
@@ -86,19 +69,19 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="data">Data *</label>
-                        <input 
-                            type="date" 
-                            id="data" 
-                            name="data" 
+                        <input
+                            type="date"
+                            id="data"
+                            name="data"
                             required
                         >
                     </div>
                     <div class="form-group">
                         <label for="horario">Horário de Início *</label>
-                        <input 
-                            type="time" 
-                            id="horario" 
-                            name="horario" 
+                        <input
+                            type="time"
+                            id="horario"
+                            name="horario"
                             required
                         >
                     </div>
@@ -107,6 +90,7 @@
                 <button type="submit" class="btn-primary">Criar Oficina</button>
             </form>
         </section>
+<<<<<<< HEAD
 
         <!-- DIVIDER -->
         <hr class="section-divider">
@@ -136,6 +120,8 @@
 
             <div id="editMessage" aria-live="polite"></div>
         </section>
+=======
+>>>>>>> a0cd6f8 ([#9 / #20] Implementacao de perfil e refatoracao de algumas logicas e verificacoes)
     </main>
 
     <!-- FOOTER -->
@@ -146,7 +132,14 @@
     </footer>
 
     <script src="/env.js"></script>
+    <script src="../scripts/header.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            initHeader('criar')
+        })
+    </script>
     <script src="../scripts/criar-oficinas.js"></script>
+
 </body>
 
 </html>

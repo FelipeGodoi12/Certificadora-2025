@@ -6,7 +6,24 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     admin: { type: Boolean, required: false, default: false },
     createdAt: { type: Date, default: Date.now },
-    oficinasInscritas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Oficina' }] 
+    oficinasInscritas: [
+        {
+            oficina: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'oficina',
+                required: true,
+            },
+            status: {
+                type: String,
+                enum: ['inscrito', 'concluido'],
+                default: 'inscrito',
+            },
+            dataInscricao: {
+                type: Date,
+                default: Date.now,
+            },
+        },
+    ],
 }, {
     versionKey: false
 })

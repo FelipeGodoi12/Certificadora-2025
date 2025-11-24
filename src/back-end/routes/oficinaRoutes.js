@@ -4,7 +4,9 @@ const Oficina = require('../models/Oficinas')
 const authAdmin = require('../middlewares/authAdmin')
 const User = require('../models/User.js')
 
-// Funções de gerenciamento de data 
+// =========================
+// Funções de gerenciamento de data
+// =========================
 
 async function atualizarStatusOficinas() {
     const agora = new Date()
@@ -14,66 +16,88 @@ async function atualizarStatusOficinas() {
     )
 }
 
+// =========================
+// LISTAGEM GERAL (usado em algumas telas)
+// =========================
+
 router.get('/', async (req, res) => {
     try {
-        await atualizarStatusOficinas() // Chama antes de buscar
+        await atualizarStatusOficinas()
         const oficinas = await Oficina.find({}).populate('inscritos', 'email')
         res.json(oficinas)
     } catch (err) {
+        console.error(err)
         res.status(500).json({ erro: 'Erro ao buscar oficinas' })
     }
 })
 
-// Criar, Editar, Listar
+// =========================
+// CRIAR OFICINA (ADMIN)
+// =========================
 
 router.post('/criar-oficina', authAdmin, async (req, res) => {
     try {
-        const { titulo, professor, descricao, data, horario, vagas } = req.body
+        // Aceita tanto os nomes antigos quanto possíveis nomes novos do front
+        const titulo = req.body.titulo || req.body.nome
+        const professor = req.body.professor
+        const descricao = req.body.descricao || req.body.description
+        const data = req.body.data || req.body.dataOficina
+        const horario = req.body.horario || req.body.horarioOficina
+        const vagas = req.body.vagas || req.body.vagasOficina
 
-        if(!titulo || !professor || !descricao || !data || !horario || !vagas) {
+        if (!titulo || !professor || !descricao || !data || !horario || !vagas) {
             return res.status(400).json({ message: 'Todos os campos são obrigatórios.' })
         }
 
         const novaOficina = new Oficina({
             nome: titulo,
-            professor: professor,
-            descricao: descricao,
-            data: new Date(`${data}T${horario}`), 
-            horario: horario,
-            vagas: vagas
+            professor,
+            descricao,
+            data: new Date(`${data}T${horario}`),
+            horario,
+            vagas
         })
 
         await novaOficina.save()
 
         res.status(201).json({ message: 'Oficina criada com sucesso!' })
     } catch (error) {
-        console.error(error)
+        console.error('Erro ao criar oficina:', error)
         res.status(500).json({ message: 'Erro ao criar oficina.' })
     }
 })
 
+// =========================
+// LISTAR OFICINAS (PÚBLICO / FRONT DE LISTA)
+// =========================
+
 router.get('/oficinas/list', async (req, res) => {
-  await atualizarStatusOficinas()
-  try {
-    const oficinas = await Oficina.find()
-    res.status(200).json(oficinas)
-  } catch (err) {
-    res.status(500).json({ message: "Erro ao buscar oficinas" })
-  }
+    await atualizarStatusOficinas()
+    try {
+        const oficinas = await Oficina.find()
+        res.status(200).json(oficinas)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ message: 'Erro ao buscar oficinas' })
+    }
 })
 
 router.get('/api/oficinas', async (req, res) => {
-  await atualizarStatusOficinas()
-  try {
-    const oficinas = await Oficina.find({}).populate('inscritos', 'email')
-    res.status(200).json(oficinas)
-  } catch (err) {
-    res.status(500).json({ message: "Erro ao buscar oficinas" })
-  }
+    await atualizarStatusOficinas()
+    try {
+        const oficinas = await Oficina.find({}).populate('inscritos', 'email')
+        res.status(200).json(oficinas)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ message: 'Erro ao buscar oficinas' })
+    }
 })
 
-// BUSCAR UMA oficina por ID
-router.get('/api/oficinas/:id', authAdmin, async (req, res) => {
+// =========================
+// BUSCAR UMA OFICINA POR ID
+// =========================
+
+router.get('/api/oficinas/:id', async (req, res) => {
     try {
         const oficina = await Oficina.findById(req.params.id)
         if (!oficina) {
@@ -81,26 +105,29 @@ router.get('/api/oficinas/:id', authAdmin, async (req, res) => {
         }
         res.status(200).json(oficina)
     } catch (error) {
+        console.error(error)
         res.status(500).json({ message: 'Erro ao buscar oficina.' })
     }
 })
 
-// ATUALIZAR UMA oficina por ID
+// =========================
+// ATUALIZAR OFICINA (ADMIN)
+// =========================
+
 router.put('/api/oficinas/:id', authAdmin, async (req, res) => {
     try {
         const { titulo, professor, descricao, data, horario, vagas } = req.body
-        
+
         const oficina = await Oficina.findById(req.params.id)
         if (!oficina) {
             return res.status(404).json({ message: 'Oficina não encontrada.' })
         }
 
-        // REGRA DE NEGÓCIO: Só o criador pode editar
-        if (oficina.criador.toString() !== req.user.id) {
-            return res.status(403).json({ message: 'Acesso negado. Você não é o criador desta oficina.' })
-        }
+        // Se você não tiver campo "criador" no schema, comente este bloco:
+        // if (oficina.criador && oficina.criador.toString() !== req.user.id) {
+        // 	return res.status(403).json({ message: 'Acesso negado. Você não é o criador desta oficina.' })
+        // }
 
-        // Atualiza os campos
         oficina.nome = titulo
         oficina.professor = professor
         oficina.descricao = descricao
@@ -110,114 +137,147 @@ router.put('/api/oficinas/:id', authAdmin, async (req, res) => {
 
         await oficina.save()
 
-        res.status(200).json({ message: 'Oficina atualizada com sucesso!', oficina: oficina })
-
+        res.status(200).json({ message: 'Oficina atualizada com sucesso!', oficina })
     } catch (error) {
         console.error(error)
         res.status(500).json({ message: 'Erro ao atualizar oficina.' })
     }
 })
 
-// Inscrever, cancelar inscrição
+// =========================
+// ALTERAR STATUS (ADMIN)  << NOVO
+// =========================
+
+router.patch('/api/oficinas/:id/status', authAdmin, async (req, res) => {
+    try {
+        const { novoStatus } = req.body // opcional: 'Aberta', 'finalizada', etc.
+
+        const oficina = await Oficina.findById(req.params.id)
+        if (!oficina) {
+            return res.status(404).json({ message: 'Oficina não encontrada.' })
+        }
+
+        // Se front enviar explicitamente:
+        if (novoStatus) {
+            oficina.status = novoStatus
+        } else {
+            // fallback: alterna Aberta/finalizada
+            oficina.status = oficina.status === 'Aberta' ? 'finalizada' : 'Aberta'
+        }
+
+        await oficina.save()
+        return res.status(200).json({
+            message: 'Status atualizado com sucesso!',
+            status: oficina.status
+        })
+    } catch (error) {
+        console.error('Erro ao alterar status da oficina:', error)
+        res.status(500).json({ message: 'Erro ao alterar status da oficina.' })
+    }
+})
+
+// =========================
+// INSCRIÇÃO / CANCELAMENTO
+// =========================
 
 router.post('/api/oficinas/:id/inscrever', async (req, res) => {
     await atualizarStatusOficinas()
     try {
-    const { email } = req.body
-    const oficinasId = req.params.id
-    
-    if (!email || !oficinasId) {
-      return res.status(400).json({ msg: 'Email e ID da oficina são obrigatórios.' })
+        const { email } = req.body
+        const oficinasId = req.params.id
+
+        if (!email || !oficinasId) {
+            return res.status(400).json({ msg: 'Email e ID da oficina são obrigatórios.' })
+        }
+
+        const user = await User.findOne({ email })
+        const oficina = await Oficina.findById(oficinasId)
+
+        if (!user) return res.status(404).json({ msg: 'Usuário não encontrado.' })
+        if (!oficina) return res.status(404).json({ msg: 'Oficina não encontrada.' })
+
+        if (oficina.status !== 'Aberta') {
+            return res.status(400).json({ msg: 'Oficina encerrada para inscrições' })
+        }
+
+
+        const jaInscrito = (user.oficinasInscritas || []).some(
+            (o) => o.oficina.toString() === oficina._id.toString()
+        )
+        if (jaInscrito) {
+            return res.status(409).json({ msg: 'Usuário já inscrito nesta oficina.' })
+        }
+
+        // Verifica vagas disponíveis
+        if (oficina.inscritos.length >= oficina.vagas) {
+            return res.status(403).json({ msg: 'Oficina sem vagas disponíveis.' })
+        }
+
+        // Efetua a inscrição
+        user.oficinasInscritas.push({
+            oficina: oficina._id,
+            status: 'inscrito',
+            dataInscricao: new Date()
+        })
+        oficina.inscritos.push(user._id)
+
+        await user.save()
+        await oficina.save()
+
+        res.status(200).json({ msg: 'Inscrição realizada com sucesso!' })
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ msg: 'Erro ao realizar inscrição' })
     }
-
-    // Encontrar usuário e oficina
-    const user = await User.findOne({ email })
-    const oficina = await Oficina.findById(oficinasId)
-
-    /*Verifica se a oficina já foi encerrada ou ainda está aberta*/
-    if (oficina.status !== 'Aberta') {
-      return res.status(400).json({ msg: 'Oficina encerrada para inscrições' })
-    }
-    
-    if (!user) return res.status(404).json({ msg: 'Usuário não encontrado.' })
-    if (!oficina) return res.status(404).json({ msg: 'Oficina não encontrada.' })
-
-    // Verifica se já está inscrito
-    if (user.oficinasInscritas.includes(oficina._id)) {
-      return res.status(409).json({ msg: 'Usuário já inscrito nesta oficina.' })
-    }
-
-    // Verifica vagas disponíveis
-    if (oficina.inscritos.length >= oficina.vagas) {
-      return res.status(403).json({ msg: 'Oficina sem vagas disponíveis.' })
-    }
-
-    // Efetua a inscrição
-    user.oficinasInscritas.push(oficina._id)
-    oficina.inscritos.push(user._id)
-
-    await user.save()
-    await oficina.save()
-
-    res.status(200).json({ msg: 'Inscrição realizada com sucesso!' })
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ msg: 'Erro ao realizar inscrição' })
-  }
 })
 
-// Cancelar inscrição de usuário em uma oficina
+// Cancelar
 router.delete('/api/oficinas/:id/cancelar', async (req, res) => {
     await atualizarStatusOficinas()
     const { email } = req.body
     const oficinasId = req.params.id
 
     if (!email || !oficinasId) {
-        return res.status(400).json({ erro: "Email e ID da oficina são obrigatórios" })
+        return res.status(400).json({ erro: 'Email e ID da oficina são obrigatórios' })
     }
 
     try {
-        // Busca o usuário pelo email
         const user = await User.findOne({ email })
         if (!user) {
-            return res.status(404).json({ erro: "Usuário não encontrado" })
+            return res.status(404).json({ erro: 'Usuário não encontrado' })
         }
 
-        // Busca a oficina pelo ID
         const oficina = await Oficina.findById(oficinasId)
         if (!oficina) {
-            return res.status(404).json({ erro: "Oficina não encontrada" })
+            return res.status(404).json({ erro: 'Oficina não encontrada' })
         }
 
         if (oficina.status !== 'Aberta') {
             return res.status(400).json({ msg: 'Erro ao cancelar: oficina encerrada' })
         }
 
-        // Remover o ObjectId do usuário do array 'inscritos'
         const beforeCount = oficina.inscritos.length
         oficina.inscritos = oficina.inscritos.filter(
-            inscritoId => inscritoId.toString() !== user._id.toString()
+            (inscritoId) => inscritoId.toString() !== user._id.toString()
         )
         const afterCount = oficina.inscritos.length
 
         user.oficinasInscritas = (user.oficinasInscritas || []).filter(
-          oficinaId => oficinaId.toString() !== oficina._id.toString()
+            (o) => o.oficina.toString() !== oficina._id.toString()
         )
         await user.save()
 
         if (beforeCount === afterCount) {
-            return res.status(400).json({ erro: "Usuário não está inscrito nesta oficina" })
+            return res.status(400).json({ erro: 'Usuário não está inscrito nesta oficina' })
         }
 
         await oficina.save()
 
-        res.json({ msg: "Inscrição cancelada com sucesso" })
+        res.json({ msg: 'Inscrição cancelada com sucesso' })
     } catch (err) {
         console.error(err)
-        res.status(500).json({ erro: "Erro ao cancelar inscrição" })
+        res.status(500).json({ erro: 'Erro ao cancelar inscrição' })
     }
 })
-
-
 
 module.exports = router
