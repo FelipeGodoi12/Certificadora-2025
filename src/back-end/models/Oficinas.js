@@ -9,9 +9,11 @@ const oficinaSchema = new mongoose.Schema({
     vagas: { type: Number, required: true },      
     status: { type: String, default: "Aberta"},
     inscritos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    criador: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     createdAt: { type: Date, default: Date.now } 
 }, {
     versionKey: false
 })
+
 
 module.exports = mongoose.model('oficina', oficinaSchema)
