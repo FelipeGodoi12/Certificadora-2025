@@ -110,3 +110,23 @@
 
     window.initHeader = initHeader
 })()
+window.mostrarNotificacao = function(texto, tipo = 'sucesso') {
+    // Define cores: Verde para sucesso, Vermelho/Laranja para erro
+    const cor = tipo === 'sucesso' 
+        ? "linear-gradient(to right, #00b09b, #96c93d)" // Verde
+        : "linear-gradient(to right, #ff5f6d, #ffc371)"; // Vermelho
+
+    Toastify({
+        text: texto,
+        duration: 3000,       // Duração em milissegundos (3 segundos)
+        close: true,          // Botão de fechar
+        gravity: "top",       // Posição vertical: top ou bottom
+        position: "right",    // Posição horizontal: left, center ou right
+        stopOnFocus: true,    // Para o tempo se passar o mouse em cima
+        style: {
+            background: cor,
+            borderRadius: "8px", // Deixa bonitinho arredondado
+            boxShadow: "0 3px 6px rgba(0,0,0,0.16)"
+        }
+    }).showToast();
+};
