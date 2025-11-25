@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     buttonHTML = `<button class="inscrever-btn" data-id="${oficina._id}" data-oficina-nome="${oficina.nome}">Inscrever-se</button>`;
                 }
             } else {
-                buttonHTML = `<button class="inscrever-btn" disabled onclick="alert('Você precisa estar logado para se inscrever!')">Inscrever-se</button>`;
+                buttonHTML = `<button class="inscrever-btn" disabled onclick="window.mostrarNotificacao('Você precisa estar logado para se inscrever!', 'erro')">Inscrever-se</button>`;
             }
 
             card.innerHTML = `
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const oficinasId = e.target.dataset.id;
             
             if (!token || !email) {
-                alert('Você precisa estar logado para se inscrever!');
+                window.mostrarNotificacao('Você precisa estar logado para se inscrever!', 'erro');
                 window.location.href = '/login';
                 return;
             }
@@ -143,10 +143,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.msg || data.message || 'Erro');
                 
-                alert('Inscrição realizada com sucesso!');
+                window.mostrarNotificacao('Inscrição realizada com sucesso!', 'sucesso');
                 window.location.reload();
             } catch (err) {
-                alert('Erro ao se inscrever: ' + err.message);
+                window.mostrarNotificacao('Erro ao se inscrever: ' + err.message, 'erro');
             }
         }
 
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.msg || data.message || 'Erro ao cancelar');
                 
-                alert('Inscrição cancelada com sucesso!');
+                window.mostrarNotificacao('Inscrição cancelada com sucesso!', 'sucesso');
                 window.location.reload();
             } catch (err) {
                 alert('Erro ao cancelar inscrição: ' + err.message);
