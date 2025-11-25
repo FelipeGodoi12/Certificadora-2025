@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const helmet = require('helmet')
 const usersRouter = require('./back-end/routes/users.js')
 const oficinaRoutes = require('./back-end/routes/oficinaRoutes.js')
 const cors = require('cors')
@@ -19,6 +20,10 @@ app.get('/env.js', (req, res) => {
   res.set('Content-Type', 'application/javascript');
   res.send(`window.BASE_URL = "${process.env.BASE_URL}";`);
 });
+
+app.use(helmet({
+  contentSecurityPolicy: false,
+}))
 
 app.use(cors({
   origin: ['http://localhost:3000', 'http://localhost:5173', 'https://certificadora-2025-13.onrender.com'],
