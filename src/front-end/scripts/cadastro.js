@@ -11,12 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const confirmaSenha = document.getElementById('confirmaSenha').value;
 
             if (password.length < 6 || password.length > 12) {
-                alert('A senha deve conter entre 6 e 12 caracteres!');
+                window.mostrarNotificacao('A senha deve conter entre 6 e 12 caracteres!', 'erro');
                 return;
             }
 
             if (password !== confirmaSenha) {
-                alert('As senhas não conferem!');
+                window.mostrarNotificacao('As senhas não conferem!', 'erro');
                 return;
             }
 
@@ -30,14 +30,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 const data = await res.json();
 
                 if (res.ok) {
-                    alert('Cadastro realizado com sucesso');
+                    window.mostrarNotificacao('Cadastro realizado com sucesso!', 'sucesso');
                     window.location.href = '/login';
                 } else {
-                    alert(data.erro || 'Erro ao cadastrar');
+                    window.mostrarNotificacao(data.erro || 'Erro ao cadastrar', 'erro');
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro ao conectar ao servidor');
+                window.mostrarNotificacao('Erro ao conectar ao servidor', 'erro');
             }
         });
     }
