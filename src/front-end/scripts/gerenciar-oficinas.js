@@ -183,13 +183,13 @@ function initModalLogic(API_BASE, token) {
             const data = await res.json()
 
             if (res.ok) {
-                alert('Oficina atualizada com sucesso!')
+                window.mostrarNotificacao('Oficina atualizada com sucesso!', 'sucesso');
                 modal.style.display = 'none'
                 // Recarrega a lista para ver as mudanças
                 const container = document.getElementById('adminOficinasContainer')
                 carregarOficinasAdmin(API_BASE, token, container)
             } else {
-                alert(data.message || 'Erro ao atualizar oficina.')
+                window.mostrarNotificacao(data.message || 'Erro ao atualizar oficina.', 'erro');
             }
         } catch (error) {
             console.error(error)
@@ -231,7 +231,7 @@ async function atualizarStatusOficina(API_BASE, token, oficinaId, novoStatus, bt
         const data = await resp.json().catch(() => ({}))
 
         if (!resp.ok) {
-            alert(data.message || 'Erro ao atualizar status da oficina.')
+            window.mostrarNotificacao(data.message || 'Erro ao atualizar status da oficina.', 'erro');
             return
         }
 
@@ -244,7 +244,7 @@ async function atualizarStatusOficina(API_BASE, token, oficinaId, novoStatus, bt
             statusSpan.dataset.status = data.status || novoStatus
         }
 
-        alert(data.message || 'Status atualizado com sucesso!')
+        window.mostrarNotificacao(data.message || 'Status atualizado com sucesso!', 'sucesso');
     } catch (err) {
         console.error('Erro ao atualizar status da oficina:', err)
         alert('Erro ao atualizar status da oficina.')
