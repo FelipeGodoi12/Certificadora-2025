@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('token', resultado.token);
                     localStorage.setItem('isAdmin', resultado.admin);
                     localStorage.setItem('email', email);
-                    msg.textContent = 'Login realizado com sucesso';
                     window.location.href = '/';
                 } else {
                     msg.textContent = resultado.erro || 'Email ou senha incorretos!';
@@ -62,4 +61,5 @@ document.addEventListener('DOMContentLoaded', function() {
             location.reload();
         });
     }
+
 });
