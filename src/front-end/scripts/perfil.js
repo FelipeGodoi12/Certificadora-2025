@@ -117,7 +117,7 @@ function configurarCancelamento() {
             if (!res.ok) {
                 const body = await res.json().catch(() => ({}))
                 console.error('Erro ao cancelar inscrição:', body)
-                alert(body.msg || body.erro || 'Erro ao cancelar inscrição.')
+                window.mostrarNotificacao(body.msg || body.erro || 'Erro ao cancelar inscrição.', 'erro');
                 return
             }
 
@@ -150,6 +150,6 @@ document.addEventListener('click', async (e) => {
         carregarOficinas()
     } catch (err) {
         console.error('Erro ao cancelar inscrição:', err)
-        alert('Não foi possível cancelar. Tente novamente.')
+        window.mostrarNotificacao('Não foi possível cancelar. Tente novamente.', 'erro');
     }
 })
