@@ -72,15 +72,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const body = await resp.json().catch(() => ({}))
 
             if (!resp.ok) {
-                alert(body.message || 'Erro ao criar oficina.')
+                window.mostrarNotificacao(body.message || 'Erro ao criar oficina.', 'erro');
                 return
             }
 
-            alert(body.message || 'Oficina criada com sucesso!')
+            window.mostrarNotificacao(body.message || 'Oficina criada com sucesso!', 'sucesso');
             form.reset()
         } catch (err) {
             console.error('Erro ao criar oficina:', err)
-            alert('Erro inesperado ao criar oficina.')
+            window.mostrarNotificacao('Erro inesperado ao criar oficina.', 'erro');
         }
     })
 })
